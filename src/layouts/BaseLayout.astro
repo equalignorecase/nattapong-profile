@@ -1,0 +1,121 @@
+---
+import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { profileData } from '../data/profile';
+
+interface Props {
+  title?: string;
+  description?: string;
+  showBackLink?: boolean;
+}
+
+const {
+  title = `${profileData.name} — ${profileData.role}`,
+  description = profileData.bio,
+  showBackLink = false,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="th" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="py-6 sm:py-12 px-3 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="app-window">
+        <!-- แถบเมนูด้านบน + ปุ่ม Switch Toggle Light / Dark -->
+        <header class="bg-tokyo-header/90 border-b border-tokyo-border px-5 py-3.5 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-20 backdrop-blur-md transition-colors duration-200">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2" aria-hidden="true">
+              <span class="w-3 h-3 rounded-full bg-tokyo-red/90 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-tokyo-amber/90 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-tokyo-green/90 inline-block"></span>
+            </div>
+            <a href="/" class="text-sm font-bold text-tokyo-heading hover:text-tokyo-blue transition-colors ml-1">
+              {profileData.name}
+            </a>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <nav class="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-medium">
+              {
+                showBackLink ? (
+                  <a
+                    href="/"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-tokyo-card border border-tokyo-blue/40 text-tokyo-cyan hover:bg-tokyo-cardHover transition-colors"
+                  >
+                    <span>←</span>
+                    <span>กลับหน้าแรก</span>
+                  </a>
+                ) : (
+                  <>
+                    <a
+                      href="#about"
+                      class="px-2.5 py-1.5 rounded-lg text-tokyo-text hover:text-tokyo-heading hover:bg-tokyo-card transition-colors"
+                    >
+                      แนะนำตัว
+                    </a>
+                    <a
+                      href="#projects"
+                      class="px-2.5 py-1.5 rounded-lg text-tokyo-text hover:text-tokyo-heading hover:bg-tokyo-card transition-colors"
+                    >
+                      ผลงานโปรเจกต์
+                    </a>
+                    <a
+                      href="#skills"
+                      class="px-2.5 py-1.5 rounded-lg text-tokyo-text hover:text-tokyo-heading hover:bg-tokyo-card transition-colors"
+                    >
+                      ทักษะ
+                    </a>
+                    <a
+                      href="#education"
+                      class="px-2.5 py-1.5 rounded-lg text-tokyo-text hover:text-tokyo-heading hover:bg-tokyo-card transition-colors"
+                    >
+                      การศึกษา
+                    </a>
+                    <a
+                      href="#contact"
+                      class="px-3 py-1.5 rounded-lg bg-tokyo-blue/15 text-tokyo-blue border border-tokyo-blue/30 hover:bg-tokyo-blue hover:text-white dark:hover:text-[#0D0E14] transition-colors"
+                    >
+                      ติดต่อ
+                    </a>
+                  </>
+                )
+              }
+            </nav>
+
+            <div class="h-4 w-px bg-tokyo-border mx-1 hidden sm:block" aria-hidden="true"></div>
+
+            <ThemeToggle />
+          </div>
+        </header>
+
+        <!-- เนื้อหาหลัก -->
+        <main class="p-5 sm:p-10 space-y-14">
+          <slot />
+        </main>
+
+        <!-- ส่วนท้ายเว็บ -->
+        <footer class="bg-tokyo-header border-t border-tokyo-border px-6 py-4 flex flex-wrap items-center justify-between gap-2 text-xs text-tokyo-comment transition-colors duration-200">
+          <span>© {new Date().getFullYear()} {profileData.name}</span>
+          <span class="font-mono">สร้างด้วย Astro • TypeScript • Tailwind CSS</span>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

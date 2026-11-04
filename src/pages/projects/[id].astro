@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout
+  title={`${project.data.title} — รายละเอียดโปรเจกต์`}
+  description={project.data.summary}
+  showBackLink={true}
+>
+  <article class="space-y-6">
+    <!-- กล่องหัวข้อโปรเจกต์ -->
+    <header class="modern-card">
+      <div class="flex flex-wrap items-center gap-2 text-xs mb-3">
+        <span class="px-2.5 py-0.5 rounded bg-tokyo-window border border-tokyo-border font-mono text-tokyo-amber">
+          ปี {project.data.year}
+        </span>
+        <span class="text-tokyo-comment">•</span>
+        <span class="font-medium text-tokyo-purple">{project.data.role}</span>
+      </div>
+
+      <h1 class="text-xl sm:text-2xl font-bold text-tokyo-heading tracking-tight mb-2">
+        {project.data.title}
+      </h1>
+
+      <p class="text-xs sm:text-sm font-mono text-tokyo-cyan mb-4">
+        {project.data.subtitle}
+      </p>
+
+      <p class="text-sm sm:text-base leading-relaxed text-tokyo-text mb-5">
+        {project.data.summary}
+      </p>
+
+      <div class="flex flex-wrap gap-1.5 mb-6">
+        {project.data.techStack.map((tech) => (
+          <span class="tech-badge">{tech}</span>
+        ))}
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-tokyo-border text-xs sm:text-sm font-medium">
+        {project.data.liveUrl && (
+          <a
+            href={project.data.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold bg-tokyo-mint text-white dark:text-[#0D0E14] hover:opacity-90 transition-opacity"
+          >
+            <span>เปิดเว็บตัวอย่าง (Live Demo)</span>
+            <span>↗</span>
+          </a>
+        )}
+        {project.data.repoUrl && (
+          <a
+            href={project.data.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-tokyo-border bg-tokyo-window text-tokyo-text hover:border-tokyo-purple hover:text-tokyo-purple transition-colors"
+          >
+            <span>ดูซอร์สโค้ดบน GitHub</span>
+            <span>↗</span>
+          </a>
+        )}
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-tokyo-comment hover:text-tokyo-heading transition-colors"
+        >
+          <span>← กลับหน้าแรก</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- กล่องสรุปจุดเด่นสำหรับคนมีเวลาอ่านน้อย -->
+    <section class="modern-card border-l-4 border-l-tokyo-blue">
+      <h2 class="text-sm font-bold text-tokyo-heading mb-3">
+        สรุปสิ่งที่พัฒนาและผลลัพธ์สำคัญ (Key Highlights)
+      </h2>
+      {project.data.metrics && (
+        <p class="text-xs sm:text-sm font-medium mb-3 text-tokyo-green bg-tokyo-window px-3.5 py-2.5 rounded-lg border border-tokyo-border">
+          ผลลัพธ์: {project.data.metrics}
+        </p>
+      )}
+      <ul class="space-y-2 text-sm text-tokyo-text">
+        {project.data.highlights.map((item) => (
+          <li class="flex items-start gap-2.5">
+            <span class="text-tokyo-mint font-bold">✓</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- เนื้อหาเจาะลึกจาก Markdown -->
+    <div class="modern-card">
+      <div
+        class="prose dark:prose-invert max-w-none font-sans prose-headings:font-sans prose-headings:text-tokyo-heading prose-headings:font-bold prose-h2:text-lg prose-h2:border-b prose-h2:border-tokyo-border prose-h2:pb-2 prose-h2:mt-6 prose-h2:mb-4 prose-p:text-tokyo-text prose-p:leading-relaxed prose-li:text-tokyo-text prose-strong:text-tokyo-cyan prose-code:font-mono prose-code:text-tokyo-mint prose-code:bg-tokyo-window prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-[#16161E] prose-pre:text-[#C0CAF5] prose-pre:border prose-pre:border-tokyo-border"
+      >
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

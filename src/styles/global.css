@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Light Mode (Tokyo Night Day) */
+  :root {
+    --tokyo-bg: 240 242 248;
+    --tokyo-header: 245 247 252;
+    --tokyo-window: 255 255 255;
+    --tokyo-card: 248 250 253;
+    --tokyo-card-hover: 240 244 251;
+    --tokyo-border: 218 224 237;
+    --tokyo-heading: 22 22 30;
+    --tokyo-text: 52 59 88;
+    --tokyo-comment: 108 115 138;
+    --tokyo-blue: 37 99 235;
+    --tokyo-cyan: 14 116 144;
+    --tokyo-mint: 13 148 136;
+    --tokyo-green: 22 128 61;
+    --tokyo-purple: 124 58 237;
+    --tokyo-amber: 180 83 9;
+    --tokyo-red: 225 29 72;
+  }
+
+  /* Dark Mode (Tokyo Night) */
+  html.dark {
+    --tokyo-bg: 13 14 20;
+    --tokyo-header: 17 18 24;
+    --tokyo-window: 22 22 30;
+    --tokyo-card: 26 27 38;
+    --tokyo-card-hover: 31 35 53;
+    --tokyo-border: 41 46 66;
+    --tokyo-heading: 255 255 255;
+    --tokyo-text: 192 202 245;
+    --tokyo-comment: 106 115 162;
+    --tokyo-blue: 122 162 247;
+    --tokyo-cyan: 125 207 255;
+    --tokyo-mint: 115 218 202;
+    --tokyo-green: 158 206 106;
+    --tokyo-purple: 187 154 247;
+    --tokyo-amber: 224 175 104;
+    --tokyo-red: 247 118 142;
+  }
+
+  html {
+    font-family: 'Anuphan', 'Inter', system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-tokyo-bg text-tokyo-text min-h-screen font-sans transition-colors duration-200;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgb(var(--tokyo-blue) / 0.08), transparent 35%),
+      radial-gradient(circle at 85% 80%, rgb(var(--tokyo-purple) / 0.06), transparent 35%),
+      linear-gradient(to right, rgb(var(--tokyo-border) / 0.35) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--tokyo-border) / 0.35) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+  }
+
+  ::selection {
+    @apply bg-tokyo-blue/25 text-tokyo-heading;
+  }
+}
+
+@layer components {
+  .app-window {
+    @apply bg-tokyo-window/95 backdrop-blur-md border border-tokyo-border rounded-2xl shadow-[0_16px_50px_rgba(15,23,42,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden transition-colors duration-200;
+  }
+
+  .section-header {
+    @apply flex items-center justify-between gap-4 mb-5 pb-3 border-b border-tokyo-border;
+  }
+
+  .section-title {
+    @apply text-lg sm:text-xl font-bold text-tokyo-heading tracking-tight flex items-center gap-2.5;
+  }
+
+  .section-badge {
+    @apply text-xs font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-tokyo-card border border-tokyo-border text-tokyo-cyan;
+  }
+
+  .modern-card {
+    @apply bg-tokyo-card border border-tokyo-border rounded-xl p-5 sm:p-6 transition-all duration-200 hover:border-tokyo-blue/60 hover:bg-tokyo-cardHover hover:shadow-[0_8px_25px_rgba(37,99,235,0.06)] dark:hover:shadow-[0_8px_30px_rgba(122,162,247,0.08)];
+  }
+
+  .tech-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-tokyo-window text-tokyo-cyan border border-tokyo-border;
+  }
+}
