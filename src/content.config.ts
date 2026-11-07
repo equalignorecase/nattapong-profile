@@ -5,6 +5,8 @@ const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
+    name: z.string(),
+    tagline: z.string(),
     subtitle: z.string(),
     year: z.string(),
     role: z.string(),
@@ -13,6 +15,7 @@ const projects = defineCollection({
     order: z.number(),
     techStack: z.array(z.string()),
     liveUrl: z.string().optional(),
+    liveLabel: z.string().optional(),
     repoUrl: z.string().optional(),
     metrics: z.string().optional(),
     highlights: z.array(z.string()),

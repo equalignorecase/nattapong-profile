@@ -8,6 +8,7 @@ export interface EducationItem {
   title: string;
   institution: string;
   description: string;
+  category?: 'education' | 'competition';
   link?: string;
 }
 
@@ -17,75 +18,184 @@ export interface ContactItem {
   href: string;
 }
 
+export interface CertificateItem {
+  id: number;
+  title: string;
+  issuer: string;
+  date: string;
+  description: string;
+  image: string;
+  category?: 'award' | 'training';
+}
+
 export const profileData = {
-  name: 'ชื่อ-นามสกุลของคุณ (Your Name)',
-  handle: '@yourhandle',
-  role: 'Junior Full-Stack / Frontend Developer',
-  location: 'Bangkok, Thailand',
-  availability: 'Open to Work — Full-time / Internship',
-  resumeUrl: '/resume.pdf',
-  bio: 'นักพัฒนาซอฟต์แวร์รุ่นใหม่ที่หลงใหลในการสร้าง Web Application ที่ใช้งานง่าย โหลดเร็ว และโค้ดดูแลรักษาง่าย ถนัดการพัฒนาด้วย TypeScript, React/Next.js และ Node.js พร้อมเรียนรู้เทคโนโลยีใหม่และแก้ไขปัญหาเชิงวิศวกรรมอย่างเป็นระบบ',
+  name: 'นัฐพงษ์ นาคอ่วม (Nattapong Nakaom)',
+  handle: '@equalignorecase',
+  role: 'Web Developer / Full-Stack Developer',
+  location: 'Nakhon Pathom, Thailand',
+  availability: 'Available for Work',
+  // Add '/resume.pdf' after placing the real PDF in public/, or use its hosted URL.
+  resumeUrl: '',
+  bio: 'มุ่งมั่นพัฒนาเว็บแอปพลิเคชันและ API ประสิทธิภาพสูงด้วย Next.js, React, TypeScript และ Python พร้อมทักษะด้านระบบเครือข่ายและ IoT',
   highlights: [
-    'พัฒนาโปรเจกต์ตั้งแต่การออกแบบ Database Schema, REST API ไปจนถึง Responsive UI',
-    'ให้ความสำคัญกับ Clean Code, Type Safety (TypeScript) และ Web Performance',
-    'คุ้นเคยกับ Git Workflow, Automated Testing และการทำ CI/CD เบื้องต้น',
+    'รางวัลรองชนะเลิศอันดับ 3 การแข่งขันทักษะเทคโนโลยีเครือข่ายระดับชาติ (มาตรฐานเหรียญทอง) ประจำปี 2567',
+    'รางวัลรองชนะเลิศอันดับ 1 ทักษะเทคโนโลยีเครือข่ายระดับภาคกลาง (มาตรฐานเหรียญทอง) ประจำปี 2567',
+    'ผลการเรียนยอดเยี่ยม GPAX 3.86 (ปวส.) และ 3.81 (ปวช.) สาขาวิชาเทคโนโลยีสารสนเทศ',
+    'มีประสบการณ์จริงด้าน Web Developer & IT Technical ในองค์กร (Masaru Marketing)',
   ],
   skills: [
     {
-      category: 'Frontend',
-      items: ['TypeScript', 'JavaScript (ES6+)', 'React', 'Next.js', 'Astro', 'Tailwind CSS', 'HTML5 / CSS3'],
+      category: 'Programming Languages',
+      items: ['TypeScript', 'JavaScript', 'Python', 'C++', 'Java', 'PHP'],
     },
     {
-      category: 'Backend & API',
-      items: ['Node.js', 'Express / Hono', 'RESTful API', 'Prisma ORM', 'Authentication (JWT / OAuth)'],
+      category: 'Frontend Development',
+      items: ['Astro', 'Next.js', 'React', 'Vue.js', 'Tailwind CSS', 'HTML5', 'CSS3', 'Three.js'],
     },
     {
-      category: 'Database & Tools',
-      items: ['PostgreSQL', 'MongoDB', 'Redis', 'Git / GitHub', 'Docker', 'Vercel / Cloudflare'],
+      category: 'Backend & Databases',
+      items: ['Express.js', 'FastAPI', 'Flask', 'MySQL', 'MongoDB', 'SQLite', 'Supabase', 'Prisma'],
+    },
+    {
+      category: 'Cloud & Tools',
+      items: ['Docker', 'AWS', 'Google Cloud', 'Vercel', 'Git', 'GitHub', 'Figma'],
     },
   ] satisfies SkillGroup[],
   education: [
     {
-      period: '2022 — 2026',
-      title: 'วิทยาศาสตรบัณฑิต สาขาวิทยาการคอมพิวเตอร์ (B.Sc. Computer Science)',
-      institution: 'มหาวิทยาลัยของคุณ (Your University)',
-      description: 'เกรดเฉลี่ยสะสม (GPAX 3.xx) • วิชาเอก Software Engineering, Database Systems, Data Structures & Algorithms',
+      period: '2567 — 2568',
+      title: 'สาขาวิชาเทคโนโลยีสารสนเทศ (ปวส.) • GPAX: 3.86',
+      institution: 'วิทยาลัยอาชีวศึกษานครปฐม',
+      description: 'ศึกษาการพัฒนาเว็บแอปพลิเคชันขั้นสูง สถาปัตยกรรมระบบเครือข่าย และการจัดการฐานข้อมูล',
+      category: 'education',
     },
     {
-      period: '2025',
-      title: 'Full-Stack Software Development Bootcamp / Certification',
-      institution: 'ชื่อสถาบัน หรือ Online Platform (เช่น Coursera / freeCodeCamp / Bootcamp)',
-      description: 'สร้างโปรเจกต์จริงแบบ End-to-End ด้วย React, TypeScript, Node.js และ PostgreSQL พร้อมฝึกทำงานร่วมกันแบบ Agile/Scrum',
-      link: 'https://github.com',
+      period: '2564 — 2566',
+      title: 'สาขาวิชาเทคโนโลยีสารสนเทศ (ปวช.) • GPAX: 3.81',
+      institution: 'วิทยาลัยอาชีวศึกษานครปฐม',
+      description: 'ศึกษาพื้นฐานการเขียนโปรแกรมคอมพิวเตอร์ การจัดการฐานข้อมูล และระบบเครือข่ายเบื้องต้น',
+      category: 'education',
     },
     {
-      period: '2024',
-      title: 'AWS Cloud Practitioner / Meta Frontend Developer Certificate',
-      institution: 'Amazon Web Services / Coursera',
-      description: 'พื้นฐานสถาปัตยกรรม Cloud, การ Deploy ระบบจริง และการจัดการความปลอดภัยเบื้องต้น',
-      link: 'https://github.com',
+      period: '2567',
+      title: 'Web Developer & IT Support',
+      institution: 'Masaru Marketing',
+      description: 'ดูแลและพัฒนาเว็บไซต์ รวมถึงงานด้านเทคนิคและการจัดการโครงสร้างพื้นฐานระบบไอทีในองค์กร',
+      category: 'education',
     },
-  ] satisfies EducationItem[],
+    {
+      period: '2567',
+      title: 'รองชนะเลิศอันดับ 3 การแข่งขันทักษะเทคโนโลยีเครือข่ายระดับชาติ (เหรียญทอง)',
+      institution: 'การแข่งขันทักษะวิชาชีพ ระดับชาติ ณ วิทยาลัยเทคนิคตรัง',
+      description: 'การแข่งขันทักษะวิชาชีพ ทักษะเทคโนโลยีเครือข่าย ประจำปีการศึกษา 2567 มาตรฐานเหรียญทอง',
+      category: 'competition',
+    },
+    {
+      period: '2567',
+      title: 'รองชนะเลิศอันดับ 1 การแข่งขันทักษะเทคโนโลยีเครือข่ายระดับภาคกลาง (เหรียญทอง)',
+      institution: 'การแข่งขันทักษะวิชาชีพ ระดับภาคกลาง ณ วิทยาลัยเทคนิคพระนครศรีอยุธยา',
+      description: 'การแข่งขันทักษะวิชาชีพ ทักษะเทคโนโลยีเครือข่าย ประจำปีการศึกษา 2567 มาตรฐานเหรียญทอง',
+      category: 'competition',
+    },
+    {
+      period: '2566',
+      title: 'รองชนะเลิศอันดับ 3 การแข่งขันทักษะการเขียนโปรแกรมคอมพิวเตอร์ (ระดับภาคกลาง)',
+      institution: 'การแข่งขันทักษะวิชาชีพ ทักษะการเขียนโปรแกรมคอมพิวเตอร์ ประจำปีการศึกษา 2566',
+      description: 'แข่งขันทักษะการเขียนโปรแกรมเพื่อแก้โจทย์เชิงวิศวกรรมซอฟต์แวร์ มาตรฐานเหรียญทอง',
+      category: 'competition',
+    },
+    {
+      period: '2567',
+      title: 'อบรมโครงการพัฒนาทักษะวิชาชีพขั้นสูง (IoT & Embedded Systems)',
+      institution: 'Cisco Networking Academy & โครงการพัฒนาทักษะวิชาชีพขั้นสูง',
+      description: 'อบรมการพัฒนาระบบสมองกลฝังตัว นวัตกรรมด้านอิเล็กทรอนิกส์ปัญญาประดิษฐ์ และระบบเครือข่าย',
+      category: 'competition',
+    },
+  ] as EducationItem[],
+  certificates: [
+    {
+      id: 1,
+      title: 'รองชนะเลิศอันดับ 3 (ระดับชาติ)',
+      issuer: 'มาตรฐานเหรียญทอง',
+      date: '2567',
+      description: 'การแข่งขันทักษะวิชาชีพ ทักษะเทคโนโลยีเครือข่าย ประจำปีการศึกษา 2567 ณ วิทยาลัยเทคนิคตรัง',
+      image: '/img/certificates/1.png',
+      category: 'award',
+    },
+    {
+      id: 5,
+      title: 'รองชนะเลิศอันดับ 1 (ระดับภาคกลาง)',
+      issuer: 'มาตรฐานเหรียญทอง',
+      date: '2567',
+      description: 'การแข่งขันทักษะวิชาชีพ ทักษะเทคโนโลยีเครือข่าย ประจำปีการศึกษา 2567 ณ วิทยาลัยเทคนิคพระนครศรีอยุธยา',
+      image: '/img/certificates/5.jpg',
+      category: 'award',
+    },
+    {
+      id: 3,
+      title: 'รองชนะเลิศอันดับ 2 (ระดับภาคกลาง)',
+      issuer: 'มาตรฐานเหรียญทอง',
+      date: '2568',
+      description: 'การแข่งขันทักษะวิชาชีพ ทักษะเทคโนโลยีเครือข่าย ประจำปีการศึกษา 2568',
+      image: '/img/certificates/3.jpg',
+      category: 'award',
+    },
+    {
+      id: 2,
+      title: 'รองชนะเลิศอันดับ 3 (ระดับภาคกลาง)',
+      issuer: 'มาตรฐานเหรียญทอง',
+      date: '2566',
+      description: 'การแข่งขันทักษะวิชาชีพ ทักษะการเขียนโปรแกรมคอมพิวเตอร์ ประจำปีการศึกษา 2566',
+      image: '/img/certificates/2.jpg',
+      category: 'award',
+    },
+    {
+      id: 4,
+      title: 'รองชนะเลิศอันดับ 3 (ระดับภาคกลาง)',
+      issuer: 'มาตรฐานเหรียญเงิน',
+      date: '2565',
+      description: 'การแข่งขันทักษะวิชาชีพ ทักษะการเขียนโปรแกรมคอมพิวเตอร์ ประจำปีการศึกษา 2565',
+      image: '/img/certificates/4.jpg',
+      category: 'award',
+    },
+    {
+      id: 6,
+      title: 'อบรมโครงการพัฒนาทักษะวิชาชีพขั้นสูง',
+      issuer: 'การพัฒนาระบบสมองกลฝังตัว',
+      date: '2567',
+      description: 'อบรมโครงการพัฒนาทักษะวิชาชีพขั้นสูงพร้อมสร้างนวัตกรรมด้านอิเล็กทรอนิกส์ปัญญาประดิษฐ์และข้อมูล หัวข้อ การพัฒนาระบบสมองกลฝังตัว',
+      image: '/img/certificates/6.jpg',
+      category: 'training',
+    },
+    {
+      id: 7,
+      title: 'อบรมโครงการพัฒนาทักษะวิชาชีพขั้นสูง',
+      issuer: 'การพัฒนาระบบอินเทอร์เน็ตในทุกสิ่ง (IoT)',
+      date: '2567',
+      description: 'อบรมโครงการพัฒนาทักษะวิชาชีพขั้นสูงพร้อมสร้างนวัตกรรมด้านอิเล็กทรอนิกส์ปัญญาประดิษฐ์และข้อมูล หัวข้อ การพัฒนาระบบอินเทอร์เน็ตในทุกสิ่ง',
+      image: '/img/certificates/7.jpg',
+      category: 'training',
+    },
+    {
+      id: 8,
+      title: 'อบรมเกี่ยวกับระบบเครือข่าย',
+      issuer: 'Cisco Networking Academy',
+      date: '2568',
+      description: 'อบรบเกี่ยวกับระบบเครือข่าย Cisco Networking Academy',
+      image: '/img/certificates/8.jpg',
+      category: 'training',
+    },
+  ] as CertificateItem[],
   contacts: [
     {
       label: 'Email',
-      value: 'youremail@example.com',
-      href: 'mailto:youremail@example.com',
+      value: 'azzzx30089@gmail.com',
+      href: 'mailto:azzzx30089@gmail.com',
     },
     {
       label: 'GitHub',
-      value: 'github.com/yourusername',
-      href: 'https://github.com/yourusername',
-    },
-    {
-      label: 'LinkedIn',
-      value: 'linkedin.com/in/yourusername',
-      href: 'https://linkedin.com/in/yourusername',
-    },
-    {
-      label: 'Line / Phone',
-      value: '08X-XXX-XXXX (Line ID: yourlineid)',
-      href: 'tel:+66800000000',
+      value: 'github.com/equalignorecase',
+      href: 'https://github.com/equalignorecase',
     },
   ] satisfies ContactItem[],
 };

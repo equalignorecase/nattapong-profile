@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Anuphan"', '"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['"Anuphan"', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Anuphan"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
@@ -22,12 +22,7 @@ export default {
           text: 'rgb(var(--tokyo-text) / <alpha-value>)',
           comment: 'rgb(var(--tokyo-comment) / <alpha-value>)',
           blue: 'rgb(var(--tokyo-blue) / <alpha-value>)',
-          cyan: 'rgb(var(--tokyo-cyan) / <alpha-value>)',
-          mint: 'rgb(var(--tokyo-mint) / <alpha-value>)',
           green: 'rgb(var(--tokyo-green) / <alpha-value>)',
-          purple: 'rgb(var(--tokyo-purple) / <alpha-value>)',
-          amber: 'rgb(var(--tokyo-amber) / <alpha-value>)',
-          red: 'rgb(var(--tokyo-red) / <alpha-value>)',
         },
       },
     },

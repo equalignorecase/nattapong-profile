@@ -1,325 +1,345 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import TechIcon from '../components/TechIcon.astro';
+import CertificateModal from '../components/CertificateModal.astro';
 import { profileData } from '../data/profile';
 import { getCollection } from 'astro:content';
-
-const allProjects = await getCollection('projects');
-const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+const sortedProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const hasResume = Boolean(profileData.resumeUrl);
+const educationList = profileData.education.filter(e => !e.category || e.category === 'education');
+const competitionList = profileData.education.filter(e => e.category === 'competition');
+const certsWithIndex = (profileData.certificates || []).map((cert, index) => ({ ...cert, originalIndex: index }));
+const awardCertificates = certsWithIndex.filter(c => !c.category || c.category === 'award');
+const trainingCertificates = certsWithIndex.filter(c => c.category === 'training');
 ---
-
 <BaseLayout>
-  <!-- 1. แนะนำตัว (Hero Section ที่คนทุกสายงานอ่านเข้าใจทันที) -->
-  <section id="about" class="scroll-mt-16">
-    <div class="modern-card relative overflow-hidden">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="space-y-4 max-w-2xl">
-          <!-- ป้ายสถานะพร้อมเริ่มงาน -->
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-tokyo-green/10 text-tokyo-green border border-tokyo-green/30">
-            <span class="w-2 h-2 rounded-full bg-tokyo-green animate-pulse"></span>
-            <span>พร้อมเริ่มงาน ({profileData.availability})</span>
-          </div>
-
-          <div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-tokyo-heading tracking-tight">
-              {profileData.name}
-            </h1>
-            <p class="text-base sm:text-lg font-medium text-tokyo-blue mt-1">
-              {profileData.role}
-            </p>
-          </div>
-
-          <p class="text-sm sm:text-base leading-relaxed text-tokyo-text">
-            {profileData.bio}
-          </p>
-
-          <!-- จุดเด่น 3 ข้อ อ่านกวาดสายตาง่าย -->
-          <ul class="space-y-2 text-sm text-tokyo-text/90 pt-1">
-            {
-              profileData.highlights.map((item) => (
-                <li class="flex items-start gap-2.5">
-                  <span class="text-tokyo-mint font-bold mt-0.5">✓</span>
-                  <span>{item}</span>
-                </li>
-              ))
-            }
-          </ul>
-
-          <!-- ปุ่มกดหลัก ชัดเจนสำหรับ HR -->
-          <div class="flex flex-wrap items-center gap-3 pt-3">
-            <a
-              href="#projects"
-              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-tokyo-blue text-white dark:text-[#0D0E14] hover:opacity-90 transition-opacity"
-            >
-              <span>ดูผลงานโปรเจกต์</span>
-              <span>↓</span>
-            </a>
-            <a
-              href={profileData.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border border-tokyo-purple/50 bg-tokyo-purple/10 text-tokyo-purple hover:bg-tokyo-purple/20 transition-colors"
-            >
-              <span>ดาวน์โหลดเรซูเม่ (PDF)</span>
-              <span>↗</span>
-            </a>
-            <a
-              href="#contact"
-              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border border-tokyo-border bg-tokyo-window text-tokyo-text hover:border-tokyo-mint hover:text-tokyo-mint transition-colors"
-            >
-              <span>ข้อมูลติดต่อ</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- กล่องสรุปข้อมูลสั้นด้านขวา (Quick Profile Summary) -->
-        <div class="bg-tokyo-window border border-tokyo-border rounded-xl p-5 md:w-64 shrink-0 space-y-3.5 text-sm">
-          <div class="text-xs font-mono uppercase tracking-wider text-tokyo-comment pb-2 border-b border-tokyo-border">
-            ข้อมูลเบื้องต้น (Quick Info)
-          </div>
-          <div>
-            <div class="text-xs text-tokyo-comment">สายงานที่สนใจ</div>
-            <div class="font-semibold text-tokyo-heading mt-0.5">Full-Stack / Frontend</div>
-          </div>
-          <div>
-            <div class="text-xs text-tokyo-comment">ระดับประสบการณ์</div>
-            <div class="font-semibold text-tokyo-mint mt-0.5">Junior / จบใหม่พร้อมลุยงาน</div>
-          </div>
-          <div>
-            <div class="text-xs text-tokyo-comment">ที่อยู่ปัจจุบัน</div>
-            <div class="font-semibold text-tokyo-heading mt-0.5">{profileData.location}</div>
-          </div>
-          <div class="pt-2 border-t border-tokyo-border flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-sm bg-tokyo-red"></span>
-            <span class="w-3 h-3 rounded-sm bg-tokyo-amber"></span>
-            <span class="w-3 h-3 rounded-sm bg-tokyo-green"></span>
-            <span class="w-3 h-3 rounded-sm bg-tokyo-mint"></span>
-            <span class="w-3 h-3 rounded-sm bg-tokyo-blue"></span>
-            <span class="w-3 h-3 rounded-sm bg-tokyo-purple"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2. ผลงานโปรเจกต์เด่น (Selected Projects) -->
-  <section id="projects" class="scroll-mt-16">
-    <div class="section-header">
-      <h2 class="section-title">
-        <span class="w-2.5 h-6 rounded-full bg-tokyo-blue inline-block"></span>
-        <span>ผลงานโปรเจกต์เด่น (Selected Projects)</span>
-      </h2>
-      <span class="section-badge">{sortedProjects.length} Projects</span>
-    </div>
-
-    <div class="space-y-5">
-      {
-        sortedProjects.map((project, index) => (
-          <article class="modern-card group">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-md text-xs font-mono font-semibold bg-tokyo-blue/15 text-tokyo-blue border border-tokyo-blue/30">
-                  Project 0{index + 1}
-                </span>
-                <span class="text-xs font-medium text-tokyo-purple">
-                  {project.data.role}
-                </span>
-              </div>
-              <span class="text-xs font-mono text-tokyo-comment px-2.5 py-0.5 rounded bg-tokyo-window border border-tokyo-border">
-                ปี {project.data.year}
-              </span>
-            </div>
-
-            <h3 class="text-lg sm:text-xl font-bold text-tokyo-heading group-hover:text-tokyo-blue transition-colors mb-1">
-              <a href={`/projects/${project.id}`}>
-                {project.data.title}
-              </a>
-            </h3>
-
-            <p class="text-xs sm:text-sm text-tokyo-cyan font-mono mb-3">
-              {project.data.subtitle}
-            </p>
-
-            <p class="text-sm sm:text-[15px] leading-relaxed text-tokyo-text mb-4">
-              {project.data.summary}
-            </p>
-
-            {project.data.metrics && (
-              <div class="text-xs sm:text-sm font-medium px-4 py-2.5 rounded-lg bg-tokyo-window border-l-4 border-tokyo-green text-tokyo-green mb-4">
-                จุดเด่นผลลัพธ์: {project.data.metrics}
-              </div>
-            )}
-
-            <div class="mb-4">
-              <div class="text-xs font-medium text-tokyo-comment mb-1.5">สิ่งที่พัฒนาในโปรเจกต์นี้:</div>
-              <ul class="space-y-1.5 text-xs sm:text-sm text-tokyo-text/90">
-                {project.data.highlights.map((point) => (
-                  <li class="flex items-start gap-2">
-                    <span class="text-tokyo-blue font-bold">•</span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <!-- ป้ายเทคโนโลยีที่ใช้ -->
-            <div class="flex flex-wrap gap-1.5 mb-5">
-              {project.data.techStack.map((tech) => (
-                <span class="tech-badge">{tech}</span>
-              ))}
-            </div>
-
-            <!-- ปุ่มกดเข้าใจง่ายทั้งสำหรับ HR และ Developer -->
-            <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-tokyo-border/80 text-xs sm:text-sm font-medium">
-              <a
-                href={`/projects/${project.id}`}
-                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-tokyo-blue text-white dark:text-[#0D0E14] font-semibold hover:opacity-90 transition-opacity"
-              >
-                <span>อ่านรายละเอียดโปรเจกต์</span>
-                <span>→</span>
-              </a>
-              {project.data.liveUrl && (
-                <a
-                  href={project.data.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-tokyo-window border border-tokyo-border text-tokyo-mint hover:border-tokyo-mint transition-colors"
-                >
-                  <span>เปิดเว็บตัวอย่าง (Live Demo)</span>
-                  <span>↗</span>
-                </a>
-              )}
-              {project.data.repoUrl && (
-                <a
-                  href={project.data.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-tokyo-window border border-tokyo-border text-tokyo-text hover:border-tokyo-purple hover:text-tokyo-purple transition-colors"
-                >
-                  <span>ดูโค้ดบน GitHub</span>
-                  <span>↗</span>
-                </a>
-              )}
-            </div>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- 3. ทักษะและความสามารถ (Skills) -->
-  <section id="skills" class="scroll-mt-16">
-    <div class="section-header">
-      <h2 class="section-title">
-        <span class="w-2.5 h-6 rounded-full bg-tokyo-purple inline-block"></span>
-        <span>ทักษะและเครื่องมือที่ใช้ (Skills & Tech Stack)</span>
-      </h2>
-      <span class="section-badge">Capabilities</span>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {
-        profileData.skills.map((group) => (
-          <div class="modern-card">
-            <h3 class="text-sm font-bold text-tokyo-heading pb-2.5 mb-3.5 border-b border-tokyo-border flex items-center justify-between">
-              <span>{group.category}</span>
-              <span class="text-xs font-mono text-tokyo-purple">{group.items.length}</span>
-            </h3>
-            <div class="flex flex-wrap gap-2">
-              {group.items.map((skill) => (
-                <span class="px-3 py-1.5 rounded-lg text-xs font-medium bg-tokyo-window border border-tokyo-border text-tokyo-text">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- 4. การศึกษาและใบรับรอง (Education & Certifications) -->
-  <section id="education" class="scroll-mt-16">
-    <div class="section-header">
-      <h2 class="section-title">
-        <span class="w-2.5 h-6 rounded-full bg-tokyo-amber inline-block"></span>
-        <span>การศึกษาและการอบรม (Education & Certificates)</span>
-      </h2>
-      <span class="section-badge">Background</span>
-    </div>
-
-    <div class="space-y-4">
-      {
-        profileData.education.map((edu) => (
-          <div class="modern-card">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
-              <span class="text-xs font-medium text-tokyo-amber">
-                {edu.institution}
-              </span>
-              <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-tokyo-window border border-tokyo-border text-tokyo-cyan">
-                {edu.period}
-              </span>
-            </div>
-
-            <h3 class="text-base sm:text-lg font-bold text-tokyo-heading mb-1.5">
-              {edu.link ? (
-                <a
-                  href={edu.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hover:text-tokyo-blue underline decoration-tokyo-border underline-offset-4"
-                >
-                  {edu.title} ↗
-                </a>
-              ) : (
-                edu.title
-              )}
-            </h3>
-
-            <p class="text-sm text-tokyo-text/90 leading-relaxed">
-              {edu.description}
-            </p>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- 5. ช่องทางติดต่อ (Contact) -->
-  <section id="contact" class="scroll-mt-16">
-    <div class="section-header">
-      <h2 class="section-title">
-        <span class="w-2.5 h-6 rounded-full bg-tokyo-mint inline-block"></span>
-        <span>ช่องทางติดต่อ (Contact)</span>
-      </h2>
-      <span class="section-badge">Get in Touch</span>
-    </div>
-
-    <div class="modern-card">
-      <p class="text-sm text-tokyo-text mb-5">
-        สนใจร่วมงาน นัดสัมภาษณ์ หรือสอบถามข้อมูลเพิ่มเติม ติดต่อได้ทุกช่องทางด้านล่าง:
+  <section id="about" class="hero" aria-labelledby="intro-title">
+    <div class="hero-main">
+      <p class="availability"><span aria-hidden="true"></span>Available for Work</p>
+      <h1 id="intro-title">{profileData.name}</h1>
+      <p class="hero-role">
+        <span
+          class="typing-text"
+          data-phrases={JSON.stringify([
+            'Full-Stack Developer',
+            'Software Engineer',
+            'Fast Learner & Builder',
+            'TypeScript & Python Specialist'
+          ])}
+        >
+          {profileData.role}
+        </span>
+        <span class="typing-cursor" aria-hidden="true">|</span>
       </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-        {
-          profileData.contacts.map((contact) => (
-            <a
-              href={contact.href}
-              target={contact.href.startsWith('http') ? '_blank' : undefined}
-              rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              class="flex items-center justify-between p-4 rounded-xl bg-tokyo-window border border-tokyo-border hover:border-tokyo-mint group transition-colors"
-            >
-              <div>
-                <div class="text-xs text-tokyo-comment mb-0.5">{contact.label}</div>
-                <div class="text-sm text-tokyo-heading group-hover:text-tokyo-mint font-medium break-all">
-                  {contact.value}
-                </div>
-              </div>
-              <span class="text-tokyo-comment group-hover:text-tokyo-mint text-base ml-2">
-                ↗
-              </span>
-            </a>
-          ))
-        }
+      <p class="hero-bio">{profileData.bio}</p>
+      <ul class="intro-highlights">{profileData.highlights.slice(0, 2).map(item => <li>{item}</li>)}</ul>
+      <div class="hero-actions">
+        <a href="#skills" class="button button-primary">ดูทักษะ<Icon name="arrow-down" /></a>
+        {hasResume ? (
+          <a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" class="button button-secondary">เรซูเม่ (PDF)<Icon name="download" /></a>
+        ) : (
+          <a href="#contact" class="button button-secondary">ติดต่อ<Icon name="arrow-up-right" /></a>
+        )}
       </div>
     </div>
+    <aside class="profile-summary" aria-label="ข้อมูลเบื้องต้น">
+      <p class="meta">ข้อมูลการทำงาน</p>
+      <dl>
+        <div><dt>ระดับประสบการณ์</dt><dd>Junior / จบใหม่</dd></div>
+        <div><dt>ที่อยู่ปัจจุบัน</dt><dd>{profileData.location}</dd></div>
+        <div><dt>รูปแบบงานที่มองหา</dt><dd>{profileData.availability}</dd></div>
+      </dl>
+    </aside>
   </section>
+  <section id="skills" aria-labelledby="skills-title">
+    <div class="section-header">
+      <h2 id="skills-title" class="section-title">ทักษะและเครื่องมือ</h2>
+      <span class="meta font-mono">Tech Stack</span>
+    </div>
+    <div class="skills-grid">
+      {profileData.skills.map(group => (
+        <div class="skill-group">
+          <h3>{group.category}</h3>
+          <ul>
+            {group.items.map(skill => (
+              <li>
+                <span class="skill-name">
+                  <TechIcon name={skill} size={18} />
+                  <span>{skill}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section id="education" aria-labelledby="education-title">
+    <div class="section-header">
+      <h2 id="education-title" class="section-title">การศึกษาและการอบรม</h2>
+      <span class="meta font-mono">Education & Competitions</span>
+    </div>
+    <div class="education-columns">
+      <div class="education-col">
+        <div class="education-col-header">
+          <h3 class="education-col-title">การศึกษาและประสบการณ์</h3>
+          <span class="meta font-mono">{educationList.length} รายการ</span>
+        </div>
+        <div class="education-compact-list">
+          {educationList.map(edu => (
+            <article class="education-compact-card">
+              <div class="education-compact-top">
+                <span class="institution" title={edu.institution}>{edu.institution}</span>
+                <span class="meta font-mono">{edu.period}</span>
+              </div>
+              <h4 class="education-compact-title">
+                {('link' in edu && edu.link) ? (
+                  <a href={edu.link} target="_blank" rel="noopener noreferrer">
+                    {edu.title}<Icon name="arrow-up-right" />
+                  </a>
+                ) : edu.title}
+              </h4>
+              <p class="education-compact-desc">{edu.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="education-col">
+        <div class="education-col-header">
+          <h3 class="education-col-title">การแข่งขันและการอบรม</h3>
+          <span class="meta font-mono">{competitionList.length} รายการ</span>
+        </div>
+        <div class="education-compact-list">
+          {competitionList.map(edu => (
+            <article class="education-compact-card">
+              <div class="education-compact-top">
+                <span class="institution" title={edu.institution}>{edu.institution}</span>
+                <span class="meta font-mono">{edu.period}</span>
+              </div>
+              <h4 class="education-compact-title">
+                {('link' in edu && edu.link) ? (
+                  <a href={edu.link} target="_blank" rel="noopener noreferrer">
+                    {edu.title}<Icon name="arrow-up-right" />
+                  </a>
+                ) : edu.title}
+              </h4>
+              <p class="education-compact-desc">{edu.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {profileData.certificates && profileData.certificates.length > 0 && (
+      <div id="certificates" class="certificates-wrapper">
+        <div class="certificates-header">
+          <div>
+            <h3 id="certificates-title" class="certificates-title">เกียรติบัตรและผลงานการแข่งขัน</h3>
+            <p class="certificates-subtitle">รางวัลการแข่งขันทักษะวิชาชีพระดับชาติ/ภาคกลาง และวุฒิบัตรการอบรม</p>
+          </div>
+          <div class="cert-tabs" role="tablist" aria-label="หมวดหมู่เกียรติบัตร">
+            <button
+              type="button"
+              role="tab"
+              id="tab-btn-award"
+              class="cert-tab-btn is-active"
+              aria-selected="true"
+              aria-controls="cert-panel-award"
+              data-tab-target="award"
+            >
+              <span>รางวัลการแข่งขัน</span>
+              <span class="cert-tab-count font-mono">{awardCertificates.length}</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-btn-training"
+              class="cert-tab-btn"
+              aria-selected="false"
+              aria-controls="cert-panel-training"
+              data-tab-target="training"
+            >
+              <span>วุฒิบัตรการอบรม</span>
+              <span class="cert-tab-count font-mono">{trainingCertificates.length}</span>
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="cert-panel-award"
+          class="certificates-grid cert-tab-panel is-active"
+          role="tabpanel"
+          aria-labelledby="tab-btn-award"
+        >
+          {awardCertificates.map(cert => (
+            <button
+              type="button"
+              class="certificate-card"
+              data-cert-index={cert.originalIndex}
+              title={`${cert.title} - คลิกเพื่อดูรูปขนาดเต็ม`}
+              aria-haspopup="dialog"
+            >
+              <div class="certificate-thumb-wrap">
+                <img
+                  src={cert.image}
+                  alt={cert.title}
+                  loading="lazy"
+                  decoding="async"
+                  class="certificate-thumb"
+                />
+                <span class="certificate-zoom-badge">
+                  <Icon name="arrow-up-right" />
+                  <span>ดูรูปเต็ม</span>
+                </span>
+              </div>
+              <div class="certificate-info">
+                <div class="certificate-meta">
+                  <span class="certificate-issuer">{cert.issuer}</span>
+                  <span class="certificate-year font-mono">{cert.date}</span>
+                </div>
+                <h4 class="certificate-name">{cert.title}</h4>
+                <p class="certificate-desc">{cert.description}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <div
+          id="cert-panel-training"
+          class="certificates-grid cert-tab-panel"
+          role="tabpanel"
+          aria-labelledby="tab-btn-training"
+          hidden
+        >
+          {trainingCertificates.map(cert => (
+            <button
+              type="button"
+              class="certificate-card"
+              data-cert-index={cert.originalIndex}
+              title={`${cert.title} - คลิกเพื่อดูรูปขนาดเต็ม`}
+              aria-haspopup="dialog"
+            >
+              <div class="certificate-thumb-wrap">
+                <img
+                  src={cert.image}
+                  alt={cert.title}
+                  loading="lazy"
+                  decoding="async"
+                  class="certificate-thumb"
+                />
+                <span class="certificate-zoom-badge">
+                  <Icon name="arrow-up-right" />
+                  <span>ดูรูปเต็ม</span>
+                </span>
+              </div>
+              <div class="certificate-info">
+                <div class="certificate-meta">
+                  <span class="certificate-issuer">{cert.issuer}</span>
+                  <span class="certificate-year font-mono">{cert.date}</span>
+                </div>
+                <h4 class="certificate-name">{cert.title}</h4>
+                <p class="certificate-desc">{cert.description}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <CertificateModal certificates={profileData.certificates} />
+      </div>
+    )}
+  </section>
+  <section id="projects" aria-labelledby="projects-title">
+    <div class="section-header">
+      <h2 id="projects-title" class="section-title">ผลงานที่คัดเลือก</h2>
+      <span class="meta font-mono">{sortedProjects.length} projects</span>
+    </div>
+    <div class="project-grid">
+      {sortedProjects.map((project, index) => (
+        <article
+          id={`project-${project.id}`}
+          class={`project-card ${index === 0 ? 'project-card-featured' : ''}`}
+          aria-labelledby={`project-title-${project.id}`}
+        >
+          <div class="project-card-header">
+            <div class="project-card-meta">
+              <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+              <span class="meta font-mono">{project.data.year}</span>
+            </div>
+            <span class="project-role-badge">{project.data.role}</span>
+          </div>
+          <div class="project-body">
+            <h3 id={`project-title-${project.id}`}>{project.data.name}</h3>
+            <p class="project-tagline">{project.data.tagline}</p>
+            <p class="project-summary">{project.data.summary}</p>
+            <div class="project-highlights">
+              <h4>สิ่งที่พัฒนา</h4>
+              <ul class="detail-list">{project.data.highlights.slice(0, 2).map(point => <li>{point}</li>)}</ul>
+            </div>
+            <ul class="tech-list" aria-label="เทคโนโลยีที่ใช้">
+              {project.data.techStack.map(tech => (
+                <li class="tech-badge">
+                  <TechIcon name={tech} size={14} />
+                  <span>{tech}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="project-actions">
+              {project.data.repoUrl && (
+                <a class="button button-secondary project-github-btn" href={project.data.repoUrl} target="_blank" rel="noopener noreferrer">
+                  <TechIcon name="github" size={16} />
+                  <span>ดูโค้ดบน GitHub</span>
+                  <Icon name="arrow-up-right" />
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section id="contact" class="contact-section" aria-labelledby="contact-title">
+    <div class="contact-intro"><h2 id="contact-title" class="section-title">ช่องทางติดต่อ</h2><p>สนใจร่วมงาน นัดสัมภาษณ์<br />หรือสอบถามเกี่ยวกับผลงาน</p></div>
+    <div class="contact-list">
+      {profileData.contacts.map(contact => (
+        <a href={contact.href} target={contact.href.startsWith('http') ? '_blank' : undefined} rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+          <span class="contact-label">{contact.label}</span><span class="contact-value">{contact.value}</span><Icon name="arrow-up-right" />
+        </a>
+      ))}
+    </div>
+  </section>
+  <script>
+    function initCertTabs() {
+      const tabBtns = document.querySelectorAll<HTMLButtonElement>('.cert-tab-btn');
+      const tabPanels = document.querySelectorAll<HTMLElement>('.cert-tab-panel');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-tab-target');
+          tabBtns.forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', String(active));
+          });
+          tabPanels.forEach(panel => {
+            const match = panel.id === `cert-panel-${target}`;
+            panel.classList.toggle('is-active', match);
+            if (match) {
+              panel.removeAttribute('hidden');
+              panel.querySelectorAll('.certificate-card').forEach(c => c.classList.add('is-revealed'));
+            } else {
+              panel.setAttribute('hidden', '');
+            }
+          });
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCertTabs);
+    } else {
+      initCertTabs();
+    }
+  </script>
 </BaseLayout>

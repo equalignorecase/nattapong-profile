@@ -1,0 +1,220 @@
+---
+import Icon from './Icon.astro';
+import type { CertificateItem } from '../data/profile';
+
+interface Props {
+  certificates: CertificateItem[];
+}
+
+const { certificates } = Astro.props;
+---
+
+<div
+  id="cert-lightbox"
+  class="cert-lightbox"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="cert-lightbox-title"
+>
+  <div class="cert-lightbox-backdrop" data-close-lightbox></div>
+  <div class="cert-lightbox-content">
+    <div class="cert-lightbox-header">
+      <div class="cert-lightbox-counter font-mono">
+        <span id="cert-lightbox-cur">1</span> / <span>{certificates.length}</span>
+      </div>
+      <button
+        type="button"
+        class="cert-lightbox-btn cert-lightbox-close"
+        data-close-lightbox
+        aria-label="ปิดหน้าต่างรูปภาพ (Escape)"
+        title="ปิด (Escape)"
+      >
+        <Icon name="close" />
+      </button>
+    </div>
+
+    <div class="cert-lightbox-stage">
+      <button
+        type="button"
+        id="cert-lightbox-prev"
+        class="cert-lightbox-nav cert-lightbox-nav-prev"
+        aria-label="ดูรูปก่อนหน้า (ลูกศรซ้าย)"
+        title="ก่อนหน้า (←)"
+      >
+        <Icon name="arrow-left" />
+      </button>
+
+      <div class="cert-lightbox-viewport">
+        <img
+          id="cert-lightbox-img"
+          src=""
+          alt=""
+          class="cert-lightbox-img"
+        />
+      </div>
+
+      <button
+        type="button"
+        id="cert-lightbox-next"
+        class="cert-lightbox-nav cert-lightbox-nav-next"
+        aria-label="ดูรูปถัดไป (ลูกศรขวา)"
+        title="ถัดไป (→)"
+      >
+        <Icon name="arrow-right" />
+      </button>
+    </div>
+
+    <div class="cert-lightbox-caption">
+      <div class="cert-lightbox-meta">
+        <span id="cert-lightbox-issuer" class="certificate-issuer"></span>
+        <span id="cert-lightbox-year" class="certificate-year font-mono"></span>
+      </div>
+      <h3 id="cert-lightbox-title" class="cert-lightbox-title"></h3>
+      <p id="cert-lightbox-desc" class="cert-lightbox-desc"></p>
+    </div>
+  </div>
+</div>
+
+<script is:inline id="certificates-json" type="application/json" set:html={JSON.stringify(certificates)} />
+
+<script>
+  function initCertificateLightbox() {
+    const rawData = document.getElementById('certificates-json')?.textContent;
+    if (!rawData) return;
+
+    interface Cert {
+      id: number;
+      title: string;
+      issuer: string;
+      date: string;
+      description: string;
+      image: string;
+    }
+
+    let items: Cert[] = [];
+    try {
+      items = JSON.parse(rawData);
+    } catch {
+      return;
+    }
+    if (!items.length) return;
+
+    const modal = document.getElementById('cert-lightbox');
+    const imgEl = document.getElementById('cert-lightbox-img') as HTMLImageElement | null;
+    const curEl = document.getElementById('cert-lightbox-cur');
+    const titleEl = document.getElementById('cert-lightbox-title');
+    const issuerEl = document.getElementById('cert-lightbox-issuer');
+    const yearEl = document.getElementById('cert-lightbox-year');
+    const descEl = document.getElementById('cert-lightbox-desc');
+    const prevBtn = document.getElementById('cert-lightbox-prev');
+    const nextBtn = document.getElementById('cert-lightbox-next');
+    const triggers = document.querySelectorAll<HTMLElement>('[data-cert-index]');
+
+    if (!modal || !imgEl) return;
+
+    let currentIndex = 0;
+    let lastActiveElement: HTMLElement | null = null;
+
+    const render = (idx: number) => {
+      currentIndex = (idx + items.length) % items.length;
+      const cert = items[currentIndex];
+      if (!cert) return;
+
+      imgEl.src = cert.image;
+      imgEl.alt = cert.title;
+      if (typeof imgEl.animate === 'function') {
+        imgEl.animate(
+          [
+            { opacity: 0.4, transform: 'scale(0.98)' },
+            { opacity: 1, transform: 'scale(1)' }
+          ],
+          { duration: 220, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+        );
+      }
+      if (curEl) curEl.textContent = String(currentIndex + 1);
+      if (titleEl) titleEl.textContent = cert.title;
+      if (issuerEl) issuerEl.textContent = cert.issuer;
+      if (yearEl) yearEl.textContent = cert.date;
+      if (descEl) descEl.textContent = cert.description;
+    };
+
+    const open = (idx: number) => {
+      lastActiveElement = document.activeElement as HTMLElement | null;
+      render(idx);
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      const closeBtn = modal.querySelector<HTMLElement>('.cert-lightbox-close');
+      closeBtn?.focus();
+    };
+
+    const close = () => {
+      if (!modal.classList.contains('is-open')) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      lastActiveElement?.focus();
+    };
+
+    const prev = () => render(currentIndex - 1);
+    const next = () => render(currentIndex + 1);
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const rawIdx = trigger.getAttribute('data-cert-index');
+        const idx = rawIdx ? parseInt(rawIdx, 10) : 0;
+        open(isNaN(idx) ? 0 : idx);
+      });
+    });
+
+    prevBtn?.addEventListener('click', prev);
+    nextBtn?.addEventListener('click', next);
+
+    modal.querySelectorAll('[data-close-lightbox]').forEach(el => {
+      el.addEventListener('click', close);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('is-open')) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        next();
+      }
+    });
+
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const stage = modal.querySelector('.cert-lightbox-stage');
+
+    stage?.addEventListener('touchstart', (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      touchStartX = touchEvent.changedTouches[0].screenX;
+    }, { passive: true });
+
+    stage?.addEventListener('touchend', (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      touchEndX = touchEvent.changedTouches[0].screenX;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 45) {
+        if (diff > 0) prev();
+        else next();
+      }
+    }, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCertificateLightbox);
+  } else {
+    initCertificateLightbox();
+  }
+</script>
