@@ -142,13 +142,12 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
             <h3 id="certificates-title" class="certificates-title">เกียรติบัตรและผลงานการแข่งขัน</h3>
             <p class="certificates-subtitle">รางวัลการแข่งขันทักษะวิชาชีพระดับชาติ/ภาคกลาง และวุฒิบัตรการอบรม</p>
           </div>
-          <div class="cert-tabs" aria-label="หมวดหมู่เกียรติบัตร">
+          <div class="cert-tabs" role="group" aria-label="หมวดหมู่เกียรติบัตร">
             <button
               type="button"
               id="tab-btn-award"
               class="cert-tab-btn is-active"
-              aria-selected="true"
-              aria-controls="cert-panel-award"
+              aria-pressed="true"
               data-tab-target="award"
             >
               <span>รางวัลการแข่งขัน</span>
@@ -158,8 +157,7 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
               type="button"
               id="tab-btn-training"
               class="cert-tab-btn"
-              aria-selected="false"
-              aria-controls="cert-panel-training"
+              aria-pressed="false"
               data-tab-target="training"
             >
               <span>วุฒิบัตรการอบรม</span>
@@ -365,7 +363,7 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
           tabBtns.forEach(b => {
             const active = b === btn;
             b.classList.toggle('is-active', active);
-            b.setAttribute('aria-selected', String(active));
+            b.setAttribute('aria-pressed', String(active));
           });
           tabPanels.forEach(panel => {
             const match = panel.id === `cert-panel-${target}`;
