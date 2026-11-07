@@ -28,6 +28,9 @@ const links = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="dark light" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={profileData.name} />
@@ -86,6 +89,7 @@ const links = [
     </script>
   </head>
   <body>
+    <div class="noise-texture" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">ข้ามไปเนื้อหา</a>
     <div class="site-shell">
       <header class="site-header">

@@ -7,29 +7,14 @@ import { profileData } from '../data/profile';
 import { getCollection } from 'astro:content';
 import { fetchGitHubRepoStats } from '../utils/github';
 const gitHubStats = await fetchGitHubRepoStats('equalignorecase');
-const sortedProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const allProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const featuredProjects = allProjects.filter(p => p.data.featured);
 const hasResume = Boolean(profileData.resumeUrl);
 const educationList = profileData.education.filter(e => !e.category || e.category === 'education');
 const competitionList = profileData.education.filter(e => e.category === 'competition');
 const certsWithIndex = (profileData.certificates || []).map((cert, index) => ({ ...cert, originalIndex: index }));
 const awardCertificates = certsWithIndex.filter(c => !c.category || c.category === 'award');
 const trainingCertificates = certsWithIndex.filter(c => c.category === 'training');
-
-function getProjectCategory(role: string): 'web' | 'backend' | 'site' {
-  const r = role.toLowerCase();
-  if (r.includes('api') || r.includes('bot')) return 'backend';
-  if (r.includes('app')) return 'web';
-  return 'site';
-}
-
-const projectsWithCategory = sortedProjects.map(p => ({
-  ...p,
-  category: getProjectCategory(p.data.role),
-}));
-
-const countWeb = projectsWithCategory.filter(p => p.category === 'web').length;
-const countBackend = projectsWithCategory.filter(p => p.category === 'backend').length;
-const countSite = projectsWithCategory.filter(p => p.category === 'site').length;
 ---
 <BaseLayout>
   <section id="about" class="hero" aria-labelledby="intro-title">
@@ -157,10 +142,9 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
             <h3 id="certificates-title" class="certificates-title">เกียรติบัตรและผลงานการแข่งขัน</h3>
             <p class="certificates-subtitle">รางวัลการแข่งขันทักษะวิชาชีพระดับชาติ/ภาคกลาง และวุฒิบัตรการอบรม</p>
           </div>
-          <div class="cert-tabs" role="tablist" aria-label="หมวดหมู่เกียรติบัตร">
+          <div class="cert-tabs" aria-label="หมวดหมู่เกียรติบัตร">
             <button
               type="button"
-              role="tab"
               id="tab-btn-award"
               class="cert-tab-btn is-active"
               aria-selected="true"
@@ -172,7 +156,6 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
             </button>
             <button
               type="button"
-              role="tab"
               id="tab-btn-training"
               class="cert-tab-btn"
               aria-selected="false"
@@ -188,7 +171,6 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
         <div
           id="cert-panel-award"
           class="certificates-grid cert-tab-panel is-active"
-          role="tabpanel"
           aria-labelledby="tab-btn-award"
         >
           {awardCertificates.map(cert => (
@@ -203,6 +185,8 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
                 <img
                   src={cert.image}
                   alt={cert.title}
+                  width="400"
+                  height="275"
                   loading="lazy"
                   decoding="async"
                   class="certificate-thumb"
@@ -227,7 +211,6 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
         <div
           id="cert-panel-training"
           class="certificates-grid cert-tab-panel"
-          role="tabpanel"
           aria-labelledby="tab-btn-training"
           hidden
         >
@@ -243,6 +226,8 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
                 <img
                   src={cert.image}
                   alt={cert.title}
+                  width="400"
+                  height="275"
                   loading="lazy"
                   decoding="async"
                   class="certificate-thumb"
@@ -269,36 +254,15 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
     )}
   </section>
   <section id="projects" aria-labelledby="projects-title">
-    <div class="section-header projects-section-header">
-      <div class="projects-title-group">
-        <h2 id="projects-title" class="section-title">ผลงานที่คัดเลือก</h2>
-        <span class="meta font-mono">{projectsWithCategory.length} projects</span>
-      </div>
-      <div class="project-tabs" role="tablist" aria-label="กรองประเภทผลงาน">
-        <button type="button" class="project-tab-btn is-active" data-filter="all" aria-selected="true">
-          <span>ทั้งหมด</span>
-          <span class="project-tab-count font-mono">{projectsWithCategory.length}</span>
-        </button>
-        <button type="button" class="project-tab-btn" data-filter="web" aria-selected="false">
-          <span>Web Apps</span>
-          <span class="project-tab-count font-mono">{countWeb}</span>
-        </button>
-        <button type="button" class="project-tab-btn" data-filter="backend" aria-selected="false">
-          <span>API & Bots</span>
-          <span class="project-tab-count font-mono">{countBackend}</span>
-        </button>
-        <button type="button" class="project-tab-btn" data-filter="site" aria-selected="false">
-          <span>Websites</span>
-          <span class="project-tab-count font-mono">{countSite}</span>
-        </button>
-      </div>
+    <div class="section-header">
+      <h2 id="projects-title" class="section-title">ผลงานเด่น</h2>
+      <span class="meta font-mono">{featuredProjects.length} featured</span>
     </div>
     <div class="project-grid">
-      {projectsWithCategory.map((project, index) => (
+      {featuredProjects.map((project, index) => (
         <article
           id={`project-${project.id}`}
           class={`project-card ${index === 0 ? 'project-card-featured' : ''}`}
-          data-category={project.category}
           aria-labelledby={`project-title-${project.id}`}
         >
           <div class="project-card-header">
@@ -310,12 +274,7 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
           </div>
           <div class="project-body">
             <h3 id={`project-title-${project.id}`}>{project.data.name}</h3>
-            <p class="project-tagline">{project.data.tagline}</p>
             <p class="project-summary">{project.data.summary}</p>
-            <div class="project-highlights">
-              <h4>สิ่งที่พัฒนา</h4>
-              <ul class="detail-list">{project.data.highlights.slice(0, 2).map(point => <li>{point}</li>)}</ul>
-            </div>
             <ul class="tech-list" aria-label="เทคโนโลยีที่ใช้">
               {project.data.techStack.map(tech => (
                 <li class="tech-badge">
@@ -355,6 +314,13 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
           </div>
         </article>
       ))}
+    </div>
+    <div class="projects-more-cta">
+      <a href="https://github.com/equalignorecase?tab=repositories" target="_blank" rel="noopener noreferrer" class="button button-secondary">
+        <TechIcon name="github" size={16} />
+        <span>ดูโปรเจกต์ทั้งหมดบน GitHub ({allProjects.length})</span>
+        <Icon name="arrow-up-right" />
+      </a>
     </div>
   </section>
   <section id="contact" class="contact-section" aria-labelledby="contact-title">
@@ -415,35 +381,6 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
       });
     }
 
-    function initProjectFilter() {
-      const btns = document.querySelectorAll<HTMLButtonElement>('.project-tab-btn');
-      const cards = document.querySelectorAll<HTMLElement>('.project-card');
-
-      btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const filter = btn.getAttribute('data-filter') || 'all';
-          btns.forEach(b => {
-            const active = b === btn;
-            b.classList.toggle('is-active', active);
-            b.setAttribute('aria-selected', String(active));
-          });
-
-          cards.forEach(card => {
-            const category = card.getAttribute('data-category');
-            const match = filter === 'all' || category === filter;
-            if (match) {
-              card.classList.remove('is-hidden');
-              card.style.display = '';
-              card.classList.add('is-revealed');
-            } else {
-              card.classList.add('is-hidden');
-              card.style.display = 'none';
-            }
-          });
-        });
-      });
-    }
-
     function initCopyEmail() {
       document.querySelectorAll<HTMLButtonElement>('.contact-copy-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
@@ -474,7 +411,6 @@ const countSite = projectsWithCategory.filter(p => p.category === 'site').length
 
     function initInteractiveFeatures() {
       initCertTabs();
-      initProjectFilter();
       initCopyEmail();
     }
 

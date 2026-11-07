@@ -16,6 +16,7 @@ const { certificates } = Astro.props;
   aria-modal="true"
   aria-hidden="true"
   aria-labelledby="cert-lightbox-title"
+  inert
 >
   <div class="cert-lightbox-backdrop" data-close-lightbox></div>
   <div class="cert-lightbox-content">
@@ -49,7 +50,9 @@ const { certificates } = Astro.props;
         <img
           id="cert-lightbox-img"
           src=""
-          alt=""
+          alt="รูปภาพเกียรติบัตรขนาดเต็ม"
+          width="800"
+          height="550"
           class="cert-lightbox-img"
         />
       </div>
@@ -142,6 +145,7 @@ const { certificates } = Astro.props;
     const open = (idx: number) => {
       lastActiveElement = document.activeElement as HTMLElement | null;
       render(idx);
+      modal.removeAttribute('inert');
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -153,6 +157,7 @@ const { certificates } = Astro.props;
       if (!modal.classList.contains('is-open')) return;
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
+      modal.setAttribute('inert', '');
       document.body.style.overflow = '';
       lastActiveElement?.focus();
     };

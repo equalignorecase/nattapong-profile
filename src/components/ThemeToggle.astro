@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 ---
-<button id="theme-toggle" type="button" role="switch" aria-label="โหมดมืด" aria-checked="true" class="theme-toggle">
+<button id="theme-toggle" type="button" aria-label="สลับโหมดสี" title="สลับโหมดสี" class="theme-toggle">
   <span class="hidden dark:inline-flex"><Icon name="sun" /></span>
   <span class="inline-flex dark:hidden"><Icon name="moon" /></span>
 </button>
@@ -9,13 +9,8 @@ import Icon from './Icon.astro';
   function initThemeToggle() {
     const button = document.getElementById('theme-toggle');
     if (!button) return;
-    const syncState = () => {
-      button.setAttribute('aria-checked', String(document.documentElement.classList.contains('dark')));
-    };
-    syncState();
     button.onclick = () => {
       const isDark = document.documentElement.classList.toggle('dark');
-      syncState();
       try {
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
       } catch {

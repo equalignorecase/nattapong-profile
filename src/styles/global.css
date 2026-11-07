@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,7 +14,7 @@
     --tokyo-border: 199 210 225;
     --tokyo-heading: 10 17 38;
     --tokyo-text: 51 65 92;
-    --tokyo-comment: 86 102 133;
+    --tokyo-comment: 71 85 105;
     --tokyo-blue: 29 78 216;
     --tokyo-purple: 30 58 138;
     --tokyo-cyan: 29 78 216;
@@ -30,12 +28,12 @@
     --tokyo-card: 18 28 54;
     --tokyo-card-hover: 25 39 74;
     --tokyo-border: 34 50 92;
-    --tokyo-heading: 238 242 255;
-    --tokyo-text: 156 171 202;
-    --tokyo-comment: 106 123 158;
-    --tokyo-blue: 43 108 245;
-    --tokyo-purple: 99 102 241;
-    --tokyo-cyan: 96 165 250;
+    --tokyo-heading: 241 245 249;
+    --tokyo-text: 203 213 225;
+    --tokyo-comment: 148 163 184;
+    --tokyo-blue: 56 160 255;
+    --tokyo-purple: 165 180 252;
+    --tokyo-cyan: 125 211 252;
     --tokyo-green: 74 222 128;
   }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
@@ -137,6 +135,8 @@
   .github-stat-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 6px; border: 1px solid rgb(var(--tokyo-border)); background: rgb(var(--tokyo-card) / 0.5); color: rgb(var(--tokyo-comment)); font-size: 12px; line-height: 1.4; transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease; }
   .github-stat-pill svg { color: rgb(var(--tokyo-blue)); width: 13px; height: 13px; }
   .project-card:hover .github-stat-pill { border-color: rgb(var(--tokyo-blue) / 0.4); background: rgb(var(--tokyo-window)); color: rgb(var(--tokyo-heading)); }
+  .projects-more-cta { display: flex; justify-content: center; margin-top: 36px; }
+  .projects-more-cta .button { gap: 8px; min-height: 44px; padding: 10px 24px; }
   .project-primary, .secondary-links a, .back-link, .text-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
   .project-primary { font-weight: 500; color: rgb(var(--tokyo-blue)); }
   .project-primary:hover { text-decoration: underline; text-underline-offset: 4px; }
@@ -486,6 +486,22 @@
   border-color: rgb(var(--tokyo-blue));
   color: #ffffff;
   transform: translateY(-2px) scale(1.05);
+}
+
+/* Subtle Film Grain Noise Overlay */
+.noise-texture {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.024;
+  background-image: url('/noise.svg');
+  background-repeat: repeat;
+}
+html.dark .noise-texture {
+  opacity: 0.038;
 }
 
 @media (max-width: 640px) {
