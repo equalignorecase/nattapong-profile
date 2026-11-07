@@ -1,21 +1,21 @@
 # Nattapong Nakaom — Developer Portfolio
 
-เว็บพอร์ตโฟลิโอส่วนตัว พัฒนาด้วย **Astro 5**, **TypeScript** และ **Tailwind CSS** เน้นความเร็วสูงแบบ Static Site Generation (SSG) พร้อมดีไซน์โทนสี Deep Ink Navy ที่รองรับทั้ง Dark และ Light Mode
+เว็บพอร์ตโฟลิโอส่วนตัว พัฒนาด้วย **Astro 5**, **TypeScript** และ **Tailwind CSS** เน้นความเร็วสูงแบบ Static Site Generation (SSG) พร้อมดีไซน์โทนสี Deep Ink Navy รองรับทั้ง Dark และ Light Mode
 
 ---
 
-## ⚡ จุดเด่นของโปรเจกต์ (Key Features)
+## จุดเด่นของโปรเจกต์ (Key Features)
 
-- **⚡ Fast & Lightweight (SSG):** ทำงานแบบ Static 100% โหลดเร็ว ไม่มี JavaScript ที่ไม่จำเป็น
-- **🐙 GitHub API Integration:** ดึงยอด Stars และ Forks แบบสดใหม่ตอน Build เว็บ ไม่ติด Rate Limit
-- **📜 Certificate Modal & Tabs:** แกลเลอรีเกียรติบัตรพร้อมปุ่มสลับแท็บ และป็อปอัป Lightbox เปิดดูรูปใหญ่ รองรับการกดลูกศรคีย์บอร์ดและปัดจอมือถือ
-- **🎨 Deep Ink Navy Theme:** โหมดมืดสีน้ำเงินเข้มลึก ไม่แสบตา และโหมดสว่างโทนสีอ่อนละมุน
-- **📱 100% Responsive Design:** ปรับแต่งเลย์เอาต์เฉพาะสำหรับจอมือถือเล็ก (< 380px), แท็บเล็ต iPad (< 900px) และจอคอมพิวเตอร์
-- **✨ Dynamic Shrink Navbar:** แถบเมนูด้านบนหดขนาดอัตโนมัติเมื่อเลื่อนหน้าจอลง พร้อมปุ่มแคปซูลไฮไลท์ตำแหน่งปัจจุบัน
+- **Fast & Lightweight (SSG):** ทำงานแบบ Static 100% โหลดเร็ว ไม่มี JavaScript ที่ไม่จำเป็น
+- **GitHub API Integration:** ดึงยอด Stars และ Forks ตอน Build เว็บ ไม่ติด Rate Limit
+- **Certificate Modal & Tabs:** แกลเลอรีเกียรติบัตรพร้อมปุ่มสลับแท็บ และ Lightbox ดูรูปใหญ่ รองรับคีย์บอร์ดและปัดจอมือถือ
+- **Deep Ink Navy Theme:** โหมดมืดสีน้ำเงินเข้มลึก สบายตา และโหมดสว่างโทนสีนุ่มนวล
+- **100% Responsive Design:** ปรับแต่งเลย์เอาต์เฉพาะสำหรับจอมือถือเล็ก (< 380px), แท็บเล็ต iPad (< 900px) และจอเดสก์ท็อป
+- **Dynamic Shrink Navbar:** แถบเมนูด้านบนย่อขนาดอัตโนมัติเมื่อเลื่อนหน้าจอ พร้อมปุ่มแคปซูลไฮไลท์ตำแหน่งปัจจุบัน
 
 ---
 
-## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+## เทคโนโลยีที่ใช้ (Tech Stack)
 
 - **Framework:** [Astro 5](https://astro.build)
 - **Language:** TypeScript
@@ -25,7 +25,7 @@
 
 ---
 
-## 📁 โครงสร้างโปรเจกต์ (Project Structure)
+## โครงสร้างโปรเจกต์ (Project Structure)
 
 ```text
 my-profile/
@@ -47,22 +47,24 @@ my-profile/
 │   │   └── index.astro      # หน้าแรกของเว็บไซต์
 │   ├── scripts/
 │   │   └── page-effects.js  # เอฟเฟกต์พิมพ์ดีด, เลื่อนปรากฏ (Stagger) และ Navbar
-│   └── styles/
-│       └── global.css       # ชุดสีตัวแปร และเลย์เอาต์ Responsive ทั้งหมด
+│   ├── styles/
+│   │   └── global.css       # ชุดสีตัวแปร และเลย์เอาต์ Responsive ทั้งหมด
+│   └── utils/
+│       └── github.ts        # ดึงสถิติ GitHub API ตอนบิลด์
 ├── package.json
 └── astro.config.mjs
 ```
 
 ---
 
-## 🚀 คำสั่งเริ่มต้นใช้งาน (Getting Started)
+## คำสั่งเริ่มต้นใช้งาน (Getting Started)
 
 ### 1. ติดตั้ง Dependencies
 ```bash
 npm install
 ```
 
-### 2. รันโหมด Development (เปิดเซิร์ฟเวอร์ทดสอบ)
+### 2. รันโหมด Development
 ```bash
 npm run dev
 ```
@@ -72,7 +74,7 @@ npm run dev
 ```bash
 npm run build
 ```
-ไฟล์พร้อมใช้งานจะถูกสร้างไว้ในโฟลเดอร์ `dist/`
+ไฟล์พร้อมใช้งานจะอยู่ในโฟลเดอร์ `dist/`
 
 ### 4. ทดสอบพรีวิวผลลัพธ์บิลด์
 ```bash
@@ -81,9 +83,8 @@ npm run preview
 
 ---
 
-## 👤 ผู้พัฒนา (Author)
+## ผู้พัฒนา (Author)
 
 - **ชื่อ:** นัฐพงษ์ นาคอ่วม (Nattapong Nakaom)
 - **GitHub:** [@equalignorecase](https://github.com/equalignorecase)
 - **Email:** azzzx30089@gmail.com
-
