@@ -75,12 +75,12 @@ test('keeps desktop and mobile navigation in sync, including a short final secti
 test('reveals only intersecting content and stops observing it after its first entry', () => {
   const env = setup();
   assert.equal(env.observers.length, 1);
-  assert.equal(env.reveal.every(target => target.classes.size === 0), true);
+  assert.equal(env.reveal.every(target => target.classes.has('reveal-item')), true);
   const observer = env.observers[0];
   observer.callback([{ target: env.reveal[0], isIntersecting: false }]);
-  assert.equal(env.reveal[0].classes.size, 0);
+  assert.equal(env.reveal[0].classes.has('is-revealed'), false);
   observer.callback([{ target: env.reveal[0], isIntersecting: true }]);
-  assert.equal(env.reveal[0].classes.has('reveal-in'), true);
+  assert.equal(env.reveal[0].classes.has('is-revealed'), true);
   assert.equal(observer.observed.has(env.reveal[0]), false);
   assert.equal(observer.observed.has(env.reveal[1]), true);
 });
@@ -89,7 +89,7 @@ for (const options of [{ reduced: true }, { observerSupport: false }]) {
   test(`content stays visible and navigation works with ${JSON.stringify(options)}`, () => {
     const env = setup(options);
     assert.equal(env.observers.length, 0);
-    assert.equal(env.reveal.every(target => target.classes.size === 0), true);
+    assert.equal(env.reveal.every(target => !target.classes.has('reveal-item')), true);
     env.state.scrollY = 950;
     env.flush('scroll');
     assertCurrent(env.links, 'projects');

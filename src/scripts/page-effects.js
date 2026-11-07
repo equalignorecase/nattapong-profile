@@ -1,6 +1,6 @@
 function initTyping() {
   const el = document.querySelector('.typing-text');
-  if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!el || typeof el.getAttribute !== 'function' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const raw = el.getAttribute('data-phrases');
   const phrases = raw ? JSON.parse(raw) : [el.textContent?.trim() || 'Full-Stack Developer'];
@@ -44,7 +44,7 @@ export function initPageEffects() {
 
   const updateNavigation = () => {
     const isScrolled = window.scrollY > 25;
-    header?.classList.toggle('is-scrolled', isScrolled);
+    header?.classList?.toggle?.('is-scrolled', isScrolled);
 
     const height = header?.getBoundingClientRect().height ?? 0;
     document.documentElement.style.setProperty('--header-height', `${height}px`);
@@ -85,8 +85,8 @@ export function initPageEffects() {
   targets.forEach(el => el.classList.add('reveal-item'));
 
   document.querySelectorAll('.project-grid, .skills-grid, .certificates-grid, .education-compact-list').forEach(grid => {
-    [...grid.children].forEach((child, idx) => {
-      child.style.setProperty('--reveal-delay', String(idx % 4));
+    [...(grid.children || [])].forEach((child, idx) => {
+      child.style?.setProperty?.('--reveal-delay', String(idx % 4));
     });
   });
 

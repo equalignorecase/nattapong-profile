@@ -1,6 +1,6 @@
 # Nattapong Nakaom — Developer Portfolio
 
-เว็บพอร์ตโฟลิโอส่วนตัว พัฒนาด้วย **Astro 5**, **TypeScript** และ **Tailwind CSS** เน้นความเร็วสูงแบบ Static Site Generation (SSG) พร้อมดีไซน์โทนสี Deep Ink Navy รองรับทั้ง Dark และ Light Mode
+เว็บพอร์ตโฟลิโอส่วนตัว พัฒนาด้วย **Astro 7**, **TypeScript** และ **Tailwind CSS** เน้นความเร็วสูงแบบ Static Site Generation (SSG) พร้อมดีไซน์โทนสี Deep Ink Navy รองรับทั้ง Dark และ Light Mode
 
 ---
 
@@ -17,7 +17,7 @@
 
 ## เทคโนโลยีที่ใช้ (Tech Stack)
 
-- **Framework:** [Astro 5](https://astro.build)
+- **Framework:** [Astro 7](https://astro.build)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS + Vanilla CSS Variables
 - **Icons:** Custom SVG Components (`Icon.astro`, `TechIcon.astro`)
