@@ -14,6 +14,22 @@ const competitionList = profileData.education.filter(e => e.category === 'compet
 const certsWithIndex = (profileData.certificates || []).map((cert, index) => ({ ...cert, originalIndex: index }));
 const awardCertificates = certsWithIndex.filter(c => !c.category || c.category === 'award');
 const trainingCertificates = certsWithIndex.filter(c => c.category === 'training');
+
+function getProjectCategory(role: string): 'web' | 'backend' | 'site' {
+  const r = role.toLowerCase();
+  if (r.includes('api') || r.includes('bot')) return 'backend';
+  if (r.includes('app')) return 'web';
+  return 'site';
+}
+
+const projectsWithCategory = sortedProjects.map(p => ({
+  ...p,
+  category: getProjectCategory(p.data.role),
+}));
+
+const countWeb = projectsWithCategory.filter(p => p.category === 'web').length;
+const countBackend = projectsWithCategory.filter(p => p.category === 'backend').length;
+const countSite = projectsWithCategory.filter(p => p.category === 'site').length;
 ---
 <BaseLayout>
   <section id="about" class="hero" aria-labelledby="intro-title">
@@ -253,15 +269,36 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
     )}
   </section>
   <section id="projects" aria-labelledby="projects-title">
-    <div class="section-header">
-      <h2 id="projects-title" class="section-title">ผลงานที่คัดเลือก</h2>
-      <span class="meta font-mono">{sortedProjects.length} projects</span>
+    <div class="section-header projects-section-header">
+      <div class="projects-title-group">
+        <h2 id="projects-title" class="section-title">ผลงานที่คัดเลือก</h2>
+        <span class="meta font-mono">{projectsWithCategory.length} projects</span>
+      </div>
+      <div class="project-tabs" role="tablist" aria-label="กรองประเภทผลงาน">
+        <button type="button" class="project-tab-btn is-active" data-filter="all" aria-selected="true">
+          <span>ทั้งหมด</span>
+          <span class="project-tab-count font-mono">{projectsWithCategory.length}</span>
+        </button>
+        <button type="button" class="project-tab-btn" data-filter="web" aria-selected="false">
+          <span>Web Apps</span>
+          <span class="project-tab-count font-mono">{countWeb}</span>
+        </button>
+        <button type="button" class="project-tab-btn" data-filter="backend" aria-selected="false">
+          <span>API & Bots</span>
+          <span class="project-tab-count font-mono">{countBackend}</span>
+        </button>
+        <button type="button" class="project-tab-btn" data-filter="site" aria-selected="false">
+          <span>Websites</span>
+          <span class="project-tab-count font-mono">{countSite}</span>
+        </button>
+      </div>
     </div>
     <div class="project-grid">
-      {sortedProjects.map((project, index) => (
+      {projectsWithCategory.map((project, index) => (
         <article
           id={`project-${project.id}`}
           class={`project-card ${index === 0 ? 'project-card-featured' : ''}`}
+          data-category={project.category}
           aria-labelledby={`project-title-${project.id}`}
         >
           <div class="project-card-header">
@@ -323,11 +360,32 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
   <section id="contact" class="contact-section" aria-labelledby="contact-title">
     <div class="contact-intro"><h2 id="contact-title" class="section-title">ช่องทางติดต่อ</h2><p>สนใจร่วมงาน นัดสัมภาษณ์<br />หรือสอบถามเกี่ยวกับผลงาน</p></div>
     <div class="contact-list">
-      {profileData.contacts.map(contact => (
-        <a href={contact.href} target={contact.href.startsWith('http') ? '_blank' : undefined} rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
-          <span class="contact-label">{contact.label}</span><span class="contact-value">{contact.value}</span><Icon name="arrow-up-right" />
-        </a>
-      ))}
+      {profileData.contacts.map(contact => {
+        const isEmail = contact.href.startsWith('mailto:');
+        return isEmail ? (
+          <div class="contact-item contact-item-copyable">
+            <span class="contact-label">{contact.label}</span>
+            <a href={contact.href} class="contact-value font-mono" title="คลิกเพื่อส่งอีเมล">{contact.value}</a>
+            <button
+              type="button"
+              class="contact-copy-btn"
+              data-copy-text={contact.value}
+              aria-label="คัดลอกอีเมล"
+              title="คัดลอกอีเมลลงคลิปบอร์ด"
+            >
+              <span class="copy-icon-default"><Icon name="copy" /></span>
+              <span class="copy-icon-checked" hidden><Icon name="check" /></span>
+              <span class="copy-toast" role="status" aria-live="polite">คัดลอกแล้ว!</span>
+            </button>
+          </div>
+        ) : (
+          <a href={contact.href} class="contact-item" target={contact.href.startsWith('http') ? '_blank' : undefined} rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+            <span class="contact-label">{contact.label}</span>
+            <span class="contact-value">{contact.value}</span>
+            <span class="contact-icon"><Icon name="arrow-up-right" /></span>
+          </a>
+        );
+      })}
     </div>
   </section>
   <script>
@@ -357,10 +415,73 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
       });
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCertTabs);
-    } else {
+    function initProjectFilter() {
+      const btns = document.querySelectorAll<HTMLButtonElement>('.project-tab-btn');
+      const cards = document.querySelectorAll<HTMLElement>('.project-card');
+
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter') || 'all';
+          btns.forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', String(active));
+          });
+
+          cards.forEach(card => {
+            const category = card.getAttribute('data-category');
+            const match = filter === 'all' || category === filter;
+            if (match) {
+              card.classList.remove('is-hidden');
+              card.style.display = '';
+              card.classList.add('is-revealed');
+            } else {
+              card.classList.add('is-hidden');
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    }
+
+    function initCopyEmail() {
+      document.querySelectorAll<HTMLButtonElement>('.contact-copy-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const text = btn.getAttribute('data-copy-text');
+          if (!text) return;
+          try {
+            await navigator.clipboard.writeText(text);
+            const def = btn.querySelector('.copy-icon-default') as HTMLElement;
+            const chk = btn.querySelector('.copy-icon-checked') as HTMLElement;
+            if (def && chk) {
+              def.hidden = true;
+              chk.hidden = false;
+              btn.classList.add('is-copied');
+              setTimeout(() => {
+                def.hidden = false;
+                chk.hidden = true;
+                btn.classList.remove('is-copied');
+              }, 2000);
+            }
+          } catch (err) {
+            console.error('Clipboard copy failed:', err);
+          }
+        });
+      });
+    }
+
+    function initInteractiveFeatures() {
       initCertTabs();
+      initProjectFilter();
+      initCopyEmail();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initInteractiveFeatures);
+    } else {
+      initInteractiveFeatures();
     }
   </script>
 </BaseLayout>

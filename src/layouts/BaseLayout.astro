@@ -47,6 +47,36 @@ const links = [
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://nattapong-profile.vercel.app/og-image.png" />
+
+    <!-- JSON-LD Structured Data (Person & WebSite) -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': 'https://nattapong-profile.vercel.app/#website',
+          'url': 'https://nattapong-profile.vercel.app/',
+          'name': 'Nattapong Nakaom — Developer Portfolio',
+          'description': description,
+          'inLanguage': 'th'
+        },
+        {
+          '@type': 'Person',
+          '@id': 'https://nattapong-profile.vercel.app/#person',
+          'name': profileData.name,
+          'jobTitle': profileData.role,
+          'url': 'https://nattapong-profile.vercel.app/',
+          'image': 'https://nattapong-profile.vercel.app/og-image.png',
+          'sameAs': [
+            'https://github.com/equalignorecase'
+          ],
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': profileData.location
+          }
+        }
+      ]
+    })} />
     <script is:inline>
       try {
         document.documentElement.classList.toggle('dark', localStorage.getItem('theme') !== 'light');
@@ -82,6 +112,15 @@ const links = [
         <span>© {new Date().getFullYear()} {profileData.name}</span>
         <span class="footer-stack">Astro / TypeScript / Tailwind CSS</span>
       </footer>
+      <button
+        type="button"
+        id="back-to-top"
+        class="back-to-top-btn"
+        aria-label="ย้อนกลับขึ้นด้านบน"
+        title="ย้อนกลับขึ้นด้านบน"
+      >
+        <Icon name="arrow-up" />
+      </button>
     </div>
     <script>
       import { initPageEffects } from '../scripts/page-effects.js';
@@ -102,6 +141,16 @@ const links = [
           menu.open = false;
         }
       });
+
+      const backToTopBtn = document.getElementById('back-to-top');
+      if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+          backToTopBtn.classList.toggle('is-visible', window.scrollY > 350);
+        }, { passive: true });
+        backToTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
     </script>
   </body>
 </html>
