@@ -80,11 +80,3 @@ npm run build
 ```bash
 npm run preview
 ```
-
----
-
-## ผู้พัฒนา (Author)
-
-- **ชื่อ:** นัฐพงษ์ นาคอ่วม (Nattapong Nakaom)
-- **GitHub:** [@equalignorecase](https://github.com/equalignorecase)
-- **Email:** azzzx30089@gmail.com
