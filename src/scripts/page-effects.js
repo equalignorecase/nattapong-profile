@@ -43,6 +43,9 @@ export function initPageEffects() {
   const header = document.querySelector('.site-header');
 
   const updateNavigation = () => {
+    const isScrolled = window.scrollY > 25;
+    header?.classList.toggle('is-scrolled', isScrolled);
+
     const height = header?.getBoundingClientRect().height ?? 0;
     document.documentElement.style.setProperty('--header-height', `${height}px`);
     let current = sections[0];

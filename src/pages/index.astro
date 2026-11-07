@@ -5,6 +5,8 @@ import TechIcon from '../components/TechIcon.astro';
 import CertificateModal from '../components/CertificateModal.astro';
 import { profileData } from '../data/profile';
 import { getCollection } from 'astro:content';
+import { fetchGitHubRepoStats } from '../utils/github';
+const gitHubStats = await fetchGitHubRepoStats('equalignorecase');
 const sortedProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const hasResume = Boolean(profileData.resumeUrl);
 const educationList = profileData.education.filter(e => !e.category || e.category === 'education');
@@ -287,11 +289,30 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
             </ul>
             <div class="project-actions">
               {project.data.repoUrl && (
-                <a class="button button-secondary project-github-btn" href={project.data.repoUrl} target="_blank" rel="noopener noreferrer">
-                  <TechIcon name="github" size={16} />
-                  <span>ดูโค้ดบน GitHub</span>
-                  <Icon name="arrow-up-right" />
-                </a>
+                <div class="project-links-wrap">
+                  <a class="button button-secondary project-github-btn" href={project.data.repoUrl} target="_blank" rel="noopener noreferrer">
+                    <TechIcon name="github" size={16} />
+                    <span>ดูโค้ดบน GitHub</span>
+                    <Icon name="arrow-up-right" />
+                  </a>
+
+                  {(() => {
+                    const repoName = project.data.repoUrl.replace(/\/$/, '').split('/').pop()?.toLowerCase() || '';
+                    const stats = gitHubStats[repoName] || { stars: 0, forks: 0 };
+                    return (
+                      <div class="github-stats-bar" title={`สถิติสดจาก GitHub (${repoName})`}>
+                        <span class="github-stat-pill" title={`${stats.stars} Stars บน GitHub`}>
+                          <Icon name="star" />
+                          <span class="font-mono">{stats.stars}</span>
+                        </span>
+                        <span class="github-stat-pill" title={`${stats.forks} Forks บน GitHub`}>
+                          <Icon name="fork" />
+                          <span class="font-mono">{stats.forks}</span>
+                        </span>
+                      </div>
+                    );
+                  })()}
+                </div>
               )}
             </div>
           </div>
