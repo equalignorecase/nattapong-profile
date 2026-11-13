@@ -19,6 +19,9 @@
     --tokyo-purple: 30 58 138;
     --tokyo-cyan: 29 78 216;
     --tokyo-green: 22 101 52;
+    --shine-base: 10 17 38;
+    --shine-edge: 125 148 180;
+    --shine-core: 240 247 255;
   }
   html.dark {
     color-scheme: dark;
@@ -35,6 +38,9 @@
     --tokyo-purple: 165 180 252;
     --tokyo-cyan: 125 211 252;
     --tokyo-green: 74 222 128;
+    --shine-base: 241 245 249;
+    --shine-edge: 148 163 184;
+    --shine-core: 255 255 255;
   }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   body { @apply bg-tokyo-window text-tokyo-text font-sans; margin: 0; min-height: 100svh; font-size: 16px; line-height: 1.75; overflow-x: hidden; }
@@ -86,6 +92,8 @@
   .availability { display: flex; gap: 8px; align-items: center; margin-bottom: 24px; color: rgb(var(--tokyo-green)); font-size: 13px; }
   .availability span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
   .hero h1 { font-size: clamp(28px, 3.2vw, 44px); line-height: 1.35; overflow-wrap: anywhere; }
+  .hero h1.name-shine { background-image: linear-gradient(100deg, rgb(var(--shine-base)) 38%, rgb(var(--shine-edge) / 0.85) 45%, rgb(var(--shine-core)) 50%, rgb(var(--shine-edge) / 0.85) 55%, rgb(var(--shine-base)) 62%); background-size: 200% 100%; background-position: 100% 50%; background-repeat: no-repeat; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: name-shine 7s linear infinite; will-change: background-position; }
+  @keyframes name-shine { 0% { background-position: 100% 50%; } 65%, 100% { background-position: 0% 50%; } }
   .hero-role { margin-top: 12px; color: rgb(var(--tokyo-blue)); font-size: 18px; line-height: 1.6; min-height: 30px; display: flex; align-items: center; }
   .typing-cursor { display: inline-block; margin-left: 3px; font-weight: 300; color: rgb(var(--tokyo-blue)); animation: cursor-blink 900ms infinite; }
   @keyframes cursor-blink { 0%, 45% { opacity: 1; } 50%, 100% { opacity: 0; } }
@@ -513,5 +521,6 @@ html.dark .noise-texture {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .reveal-item { opacity: 1 !important; transform: none !important; }
+  .hero h1.name-shine { background-image: none; -webkit-text-fill-color: currentColor; }
   .typing-cursor { display: none !important; }
 }
