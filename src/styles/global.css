@@ -87,7 +87,7 @@
   .mobile-menu nav a[aria-current="location"] { color: rgb(var(--tokyo-blue)); background: rgb(var(--tokyo-blue) / 0.12); font-weight: 600; }
   main { flex: 1; min-width: 0; width: 100%; padding: 0 var(--page-gutter); }
   main > section + section { margin-top: 64px; }
-  .hero { display: grid; grid-template-columns: minmax(0, 1fr) 248px; gap: 48px; align-items: center; padding-top: 64px; }
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) 248px; gap: 48px; align-items: center; align-content: center; min-height: calc(100svh - var(--header-height, 76px)); padding-block: 64px; }
   .hero-main { min-width: 0; }
   .availability { display: flex; gap: 8px; align-items: center; margin-bottom: 24px; color: rgb(var(--tokyo-green)); font-size: 13px; }
   .availability span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
@@ -252,7 +252,7 @@
 }
 
 @media (max-width: 899px) {
-  .hero { grid-template-columns: minmax(0, 1fr); padding-top: 40px; gap: 32px; }
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 40px; gap: 32px; }
   .profile-summary { border-left: 0; border-top: 1px solid rgb(var(--tokyo-border)); padding: 24px 0 0; }
   .profile-summary > .meta { border: 0; padding-bottom: 0; margin-bottom: 16px; }
   .profile-summary dl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 24px; }
@@ -273,7 +273,7 @@
   .mobile-menu summary { padding: 8px; }
   .mobile-menu summary span { display: none; }
   main > section + section { margin-top: 48px; }
-  .hero { padding-top: 28px; gap: 28px; }
+  .hero { padding-block: 28px; gap: 28px; }
   .hero h1 { font-size: 26px; line-height: 1.45; }
   .hero-role { font-size: 16px; }
   .hero-bio { margin-top: 18px; }
