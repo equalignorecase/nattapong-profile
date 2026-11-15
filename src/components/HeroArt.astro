@@ -1,0 +1,15 @@
+---
+import { Image } from 'astro:assets';
+import codingArt from '../assets/hero-coding-2d.png';
+---
+<Image
+  class="hero-art"
+  src={codingArt}
+  alt=""
+  aria-hidden="true"
+  widths={[240, 360, 480, 720, 960]}
+  sizes="(max-width: 639px) 85vw, (max-width: 899px) 360px, (min-width: 1440px) 480px, 40vw"
+  format="webp"
+  quality={85}
+  loading="eager"
+/>

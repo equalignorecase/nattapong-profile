@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
+import HeroArt from '../components/HeroArt.astro';
 import TechIcon from '../components/TechIcon.astro';
 import CertificateModal from '../components/CertificateModal.astro';
 import { profileData } from '../data/profile';
@@ -19,32 +20,22 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
 <BaseLayout>
   <section id="about" class="hero" aria-labelledby="intro-title">
     <div class="hero-main">
-      <p class="availability"><span aria-hidden="true"></span>Available for Work</p>
-      <h1 id="intro-title" class="name-shine">{profileData.name}</h1>
-      <p class="hero-role">
-        <span
-          class="typing-text"
-          data-phrases={JSON.stringify([
-            'Full-Stack Developer',
-            'Software Engineer',
-            'Fast Learner & Builder',
-            'TypeScript & Python Specialist'
-          ])}
-        >
-          {profileData.role}
-        </span>
-        <span class="typing-cursor" aria-hidden="true">|</span>
-      </p>
-      <p class="hero-bio">{profileData.bio}</p>
-      <ul class="intro-highlights">{profileData.highlights.slice(0, 2).map(item => <li>{item}</li>)}</ul>
-      <div class="hero-actions">
-        <a href="#skills" class="button button-primary">ดูทักษะ<Icon name="arrow-down" /></a>
-        {hasResume ? (
-          <a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" class="button button-secondary">เรซูเม่ (PDF)<Icon name="download" /></a>
-        ) : (
-          <a href="#contact" class="button button-secondary">ติดต่อ<Icon name="arrow-up-right" /></a>
-        )}
+      <div class="hero-copy">
+        <p class="availability"><span aria-hidden="true"></span>Available for Work</p>
+        <h1 id="intro-title">{profileData.name}</h1>
+        <p class="hero-role">{profileData.role}</p>
+        <p class="hero-bio">{profileData.bio}</p>
+        <ul class="intro-highlights">{profileData.highlights.slice(0, 2).map(item => <li>{item}</li>)}</ul>
+        <div class="hero-actions">
+          <a href="#skills" class="button button-primary">ดูทักษะ<Icon name="arrow-down" /></a>
+          {hasResume ? (
+            <a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" class="button button-secondary">เรซูเม่ (PDF)<Icon name="download" /></a>
+          ) : (
+            <a href="#contact" class="button button-secondary">ติดต่อ<Icon name="arrow-up-right" /></a>
+          )}
+        </div>
       </div>
+      <HeroArt />
     </div>
     <aside class="profile-summary" aria-label="ข้อมูลเบื้องต้น">
       <p class="meta">ข้อมูลการทำงาน</p>

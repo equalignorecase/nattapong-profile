@@ -1,42 +1,3 @@
-function initTyping() {
-  const el = document.querySelector('.typing-text');
-  if (!el || typeof el.getAttribute !== 'function' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const raw = el.getAttribute('data-phrases');
-  const phrases = raw ? JSON.parse(raw) : [el.textContent?.trim() || 'Full-Stack Developer'];
-  if (phrases.length <= 1) return;
-
-  let phraseIdx = 0;
-  let charIdx = 0;
-  let deleting = false;
-
-  const step = () => {
-    const text = phrases[phraseIdx];
-    if (deleting) {
-      charIdx--;
-      el.textContent = text.substring(0, charIdx);
-    } else {
-      charIdx++;
-      el.textContent = text.substring(0, charIdx);
-    }
-
-    let delay = deleting ? 35 : 70;
-
-    if (!deleting && charIdx === text.length) {
-      delay = 2200;
-      deleting = true;
-    } else if (deleting && charIdx === 0) {
-      deleting = false;
-      phraseIdx = (phraseIdx + 1) % phrases.length;
-      delay = 350;
-    }
-
-    window.setTimeout(step, delay);
-  };
-
-  window.setTimeout(step, 800);
-}
-
 export function initPageEffects() {
   const sections = [...document.querySelectorAll('main > section[id]')];
   const links = document.querySelectorAll('.site-header nav a[href^="#"]');
@@ -73,8 +34,6 @@ export function initPageEffects() {
   window.addEventListener('scroll', scheduleUpdate, { passive: true });
   window.addEventListener('resize', scheduleUpdate);
   updateNavigation();
-
-  initTyping();
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
 
