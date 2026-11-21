@@ -18,33 +18,70 @@ const awardCertificates = certsWithIndex.filter(c => !c.category || c.category =
 const trainingCertificates = certsWithIndex.filter(c => c.category === 'training');
 ---
 <BaseLayout>
-  <section id="about" class="hero" aria-labelledby="intro-title">
-    <div class="hero-main">
-      <div class="hero-copy">
-        <p class="availability"><span aria-hidden="true"></span>Available for Work</p>
-        <h1 id="intro-title">{profileData.name}</h1>
-        <p class="hero-role">{profileData.role}</p>
-        <p class="hero-bio">{profileData.bio}</p>
-        <ul class="intro-highlights">{profileData.highlights.slice(0, 2).map(item => <li>{item}</li>)}</ul>
-        <div class="hero-actions">
-          <a href="#skills" class="button button-primary">ดูทักษะ<Icon name="arrow-down" /></a>
+  <section id="about" class="hero swiss-hero" aria-labelledby="intro-title">
+    <!-- Architectural Top Bar -->
+    <div class="swiss-top-bar">
+      <div class="swiss-top-left">
+        <span class="swiss-tag font-mono">[01 // INDEX]</span>
+        <span class="swiss-dot-live" aria-hidden="true"></span>
+        <span class="swiss-status font-mono">STATUS: {profileData.availability.toUpperCase()}</span>
+      </div>
+      <div class="swiss-top-right font-mono">
+        <span>LOC: NAKHON PATHOM, TH</span>
+        <span class="swiss-coord">13.8199° N, 100.0601° E</span>
+      </div>
+    </div>
+
+    <!-- Main Architectural Grid -->
+    <div class="swiss-main-grid">
+      <!-- Left Column: Oversized Typography & Manifesto -->
+      <div class="swiss-hero-lead">
+        <div class="swiss-name-block">
+          <span class="swiss-label font-mono">FULL-STACK DEVELOPER & SYSTEMS SPECIALIST</span>
+          <h1 id="intro-title" class="swiss-title">
+            <span class="swiss-title-en">NATTAPONG</span>
+            <span class="swiss-title-en">NAKAOM</span>
+            <span class="swiss-title-th">นัฐพงษ์ นาคอ่วม</span>
+          </h1>
+        </div>
+
+        <p class="swiss-statement">
+          {profileData.bio}
+        </p>
+
+        <!-- Swiss Action Indices -->
+        <div class="swiss-action-bar">
+          <a href="#projects" class="swiss-action-link swiss-primary">
+            <span class="action-num font-mono">[01]</span>
+            <span class="action-text">VIEW PROJECTS</span>
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="#skills" class="swiss-action-link">
+            <span class="action-num font-mono">[02]</span>
+            <span class="action-text">TECH STACK</span>
+            <span class="action-arrow" aria-hidden="true">↓</span>
+          </a>
           {hasResume ? (
-            <a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" class="button button-secondary">เรซูเม่ (PDF)<Icon name="download" /></a>
+            <a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" class="swiss-action-link">
+              <span class="action-num font-mono">[03]</span>
+              <span class="action-text">RESUME (PDF)</span>
+              <span class="action-arrow" aria-hidden="true">↗</span>
+            </a>
           ) : (
-            <a href="#contact" class="button button-secondary">ติดต่อ<Icon name="arrow-up-right" /></a>
+            <a href="#contact" class="swiss-action-link">
+              <span class="action-num font-mono">[03]</span>
+              <span class="action-text">CONTACT</span>
+              <span class="action-arrow" aria-hidden="true">↗</span>
+            </a>
           )}
         </div>
       </div>
-      <HeroArt />
+
+      <!-- Right Column: Swiss System Spec Sheet -->
+      <div class="swiss-hero-spec">
+        <HeroArt />
+      </div>
     </div>
-    <aside class="profile-summary" aria-label="ข้อมูลเบื้องต้น">
-      <p class="meta">ข้อมูลการทำงาน</p>
-      <dl>
-        <div><dt>ระดับประสบการณ์</dt><dd>Junior / จบใหม่</dd></div>
-        <div><dt>ที่อยู่ปัจจุบัน</dt><dd>{profileData.location}</dd></div>
-        <div><dt>รูปแบบงานที่มองหา</dt><dd>{profileData.availability}</dd></div>
-      </dl>
-    </aside>
   </section>
   <section id="skills" aria-labelledby="skills-title">
     <div class="section-header">

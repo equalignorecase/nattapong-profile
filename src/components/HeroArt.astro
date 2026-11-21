@@ -1,15 +1,345 @@
 ---
-import { Image } from 'astro:assets';
-import codingArt from '../assets/hero-coding-2d.png';
+// Swiss Modernist Spec Sheet & Blueprint Matrix (High-Craft Edition)
 ---
-<Image
-  class="hero-art"
-  src={codingArt}
-  alt=""
-  aria-hidden="true"
-  widths={[240, 360, 480, 720, 960]}
-  sizes="(max-width: 639px) 85vw, (max-width: 899px) 360px, (min-width: 1440px) 480px, 40vw"
-  format="webp"
-  quality={85}
-  loading="eager"
-/>
+
+<div class="swiss-spec-container">
+  <!-- Blueprint Corner Crosshairs -->
+  <div class="crosshair crosshair-tl" aria-hidden="true">+</div>
+  <div class="crosshair crosshair-tr" aria-hidden="true">+</div>
+  <div class="crosshair crosshair-bl" aria-hidden="true">+</div>
+  <div class="crosshair crosshair-br" aria-hidden="true">+</div>
+
+  <!-- Spec Sheet Header -->
+  <div class="spec-header">
+    <div class="spec-header-left">
+      <span class="spec-stamp">SPEC // 2024-2025</span>
+      <span class="spec-id font-mono">SYS-ID: EQUALIGNORECASE</span>
+    </div>
+    <div class="spec-header-right font-mono" id="swissLiveClock">
+      <span class="clock-prefix">UTC+7 // </span>
+      <span class="clock-time">00:00:00</span>
+    </div>
+  </div>
+
+  <!-- Technical Spec Grid -->
+  <div class="spec-grid">
+    <div class="spec-row">
+      <div class="spec-key font-mono">01 // DOMAIN</div>
+      <div class="spec-val">Full-Stack Development & Network Systems</div>
+    </div>
+
+    <div class="spec-row highlight-row">
+      <div class="spec-key font-mono">02 // HONOR</div>
+      <div class="spec-val">
+        <span class="klein-badge font-mono">NATIONAL GOLD MEDAL</span>
+        <span class="spec-desc">แข่งขันทักษะเทคโนโลยีเครือข่ายระดับชาติ 2567</span>
+      </div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-key font-mono">03 // ACADEMIC</div>
+      <div class="spec-val">
+        <span class="font-mono font-bold">GPAX 3.86</span> (ปวส.) • <span class="font-mono font-bold">3.81</span> (ปวช.)
+        <span class="spec-sub">สาขาวิชาเทคโนโลยีสารสนเทศ</span>
+      </div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-key font-mono">04 // EXPERIENCE</div>
+      <div class="spec-val">
+        <span class="org-name">Masaru Marketing</span>
+        <span class="spec-sub">Web Developer & IT Support</span>
+      </div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-key font-mono">05 // ARCHITECTURE</div>
+      <div class="spec-val tech-stack-val font-mono">
+        <span>TypeScript</span>
+        <span class="sep">/</span>
+        <span>Next.js</span>
+        <span class="sep">/</span>
+        <span>Python</span>
+        <span class="sep">/</span>
+        <span>Supabase</span>
+        <span class="sep">/</span>
+        <span>Docker</span>
+      </div>
+    </div>
+
+    <div class="spec-row status-row">
+      <div class="spec-key font-mono">06 // TELEMETRY</div>
+      <div class="spec-val status-val font-mono">
+        <span class="pulse-indicator" aria-hidden="true"></span>
+        <span class="status-name">ACTIVE / READY</span>
+        <span class="status-ping">PING 8ms</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spec Footer / Blueprint Coordinate Matrix -->
+  <div class="spec-footer font-mono">
+    <div class="blueprint-meta">
+      <span>GRID: 12-COL ASYMMETRIC</span>
+      <span>TYPE: ARCHIVO / MONO</span>
+    </div>
+    <div class="blueprint-hash">
+      <span>VERIFIED SPECIFICATION</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .swiss-spec-container {
+    position: relative;
+    width: 100%;
+    background: rgb(var(--tokyo-card));
+    border: 1px solid rgb(var(--tokyo-border));
+    border-radius: 4px;
+    padding: 24px;
+    font-family: inherit;
+    box-shadow: none;
+    transition: border-color 200ms ease;
+  }
+
+  .swiss-spec-container:hover {
+    border-color: #2563eb;
+  }
+
+  /* Blueprint Corner Crosshairs */
+  .crosshair {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    font-size: 13px;
+    line-height: 12px;
+    font-family: ui-monospace, monospace;
+    font-weight: 300;
+    color: rgb(var(--tokyo-comment));
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.6;
+  }
+  .crosshair-tl { top: 6px; left: 8px; }
+  .crosshair-tr { top: 6px; right: 8px; }
+  .crosshair-bl { bottom: 6px; left: 8px; }
+  .crosshair-br { bottom: 6px; right: 8px; }
+
+  /* Spec Header */
+  .spec-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgb(var(--tokyo-border));
+  }
+
+  .spec-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .spec-stamp {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 6px;
+    background: #2563eb;
+    color: #ffffff;
+    border-radius: 2px;
+    font-family: ui-monospace, monospace;
+  }
+
+  .spec-id {
+    font-size: 11px;
+    color: rgb(var(--tokyo-comment));
+    letter-spacing: 0.05em;
+  }
+
+  .spec-header-right {
+    font-size: 11.5px;
+    color: rgb(var(--tokyo-heading));
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .clock-prefix {
+    color: rgb(var(--tokyo-comment));
+  }
+
+  /* Spec Grid */
+  .spec-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid rgb(var(--tokyo-border));
+    background: rgb(var(--tokyo-window));
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    border-bottom: 1px solid rgb(var(--tokyo-border));
+    align-items: baseline;
+    transition: background-color 150ms ease;
+  }
+
+  .spec-row:last-child {
+    border-bottom: none;
+  }
+
+  .spec-row:hover {
+    background: rgb(var(--tokyo-card-hover));
+  }
+
+  .spec-key {
+    padding: 12px 14px;
+    font-size: 11px;
+    color: rgb(var(--tokyo-comment));
+    letter-spacing: 0.04em;
+    border-right: 1px solid rgb(var(--tokyo-border));
+    user-select: none;
+  }
+
+  .spec-val {
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: rgb(var(--tokyo-heading));
+    line-height: 1.5;
+  }
+
+  .spec-desc {
+    display: block;
+    font-size: 12px;
+    color: rgb(var(--tokyo-comment));
+    margin-top: 3px;
+  }
+
+  .spec-sub {
+    display: block;
+    font-size: 12px;
+    color: rgb(var(--tokyo-comment));
+    margin-top: 2px;
+  }
+
+  .org-name {
+    font-weight: 600;
+  }
+
+  .klein-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2563eb;
+    letter-spacing: 0.05em;
+    margin-right: 6px;
+  }
+
+  :global(.dark) .klein-badge {
+    color: #3b82f6;
+  }
+
+  .tech-stack-val {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .tech-stack-val .sep {
+    color: rgb(var(--tokyo-border));
+    user-select: none;
+  }
+
+  /* Status Row */
+  .status-val {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .pulse-indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16a34a;
+    box-shadow: 0 0 8px #16a34a;
+  }
+
+  .status-name {
+    font-weight: 600;
+    color: #16a34a;
+    letter-spacing: 0.05em;
+  }
+
+  :global(.dark) .status-name {
+    color: #22c55e;
+  }
+
+  .status-ping {
+    color: rgb(var(--tokyo-comment));
+    font-size: 11px;
+    margin-left: auto;
+  }
+
+  /* Spec Footer */
+  .spec-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    margin-top: 14px;
+    border-top: 1px solid rgb(var(--tokyo-border));
+    font-size: 10.5px;
+    color: rgb(var(--tokyo-comment));
+    letter-spacing: 0.06em;
+  }
+
+  .blueprint-meta {
+    display: flex;
+    gap: 14px;
+  }
+
+  @media (max-width: 639px) {
+    .swiss-spec-container {
+      padding: 16px;
+    }
+    .spec-row {
+      grid-template-columns: 1fr;
+    }
+    .spec-key {
+      border-right: none;
+      border-bottom: 1px solid rgb(var(--tokyo-border));
+      padding: 8px 12px 6px;
+      background: rgb(var(--tokyo-card));
+    }
+    .spec-val {
+      padding: 10px 12px;
+    }
+  }
+</style>
+
+<script>
+  function updateLiveClock() {
+    const clockEl = document.querySelector('#swissLiveClock .clock-time');
+    if (!clockEl) return;
+    const now = new Date();
+    // Bangkok is UTC+7
+    const timeStr = now.toLocaleTimeString('en-GB', {
+      timeZone: 'Asia/Bangkok',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    clockEl.textContent = `${timeStr} BKK`;
+  }
+
+  updateLiveClock();
+  setInterval(updateLiveClock, 1000);
+  document.addEventListener('astro:page-load', updateLiveClock);
+</script>
