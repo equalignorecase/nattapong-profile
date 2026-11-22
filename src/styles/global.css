@@ -19,6 +19,9 @@
     --tokyo-purple: 30 58 138;
     --tokyo-cyan: 29 78 216;
     --tokyo-green: 22 101 52;
+    --shine-base: 10 17 38;
+    --shine-edge: 100 116 139;
+    --shine-core: 255 255 255;
   }
 
   html.dark {
@@ -36,6 +39,9 @@
     --tokyo-purple: 165 180 252;
     --tokyo-cyan: 125 211 252;
     --tokyo-green: 74 222 128;
+    --shine-base: 239 243 248;
+    --shine-edge: 148 163 184;
+    --shine-core: 255 255 255;
   }
 
   html {
@@ -569,6 +575,34 @@
     font-weight: 900;
     color: rgb(var(--tokyo-heading));
     text-transform: uppercase;
+    background-image: linear-gradient(
+      115deg,
+      rgb(var(--shine-base)) 0%,
+      rgb(var(--shine-base)) 38%,
+      rgb(var(--shine-edge) / 0.85) 46%,
+      rgb(var(--shine-core)) 50%,
+      rgb(var(--shine-edge) / 0.85) 54%,
+      rgb(var(--shine-base)) 62%,
+      rgb(var(--shine-base)) 100%
+    );
+    background-size: 240% 100%;
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: silver-shine 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    will-change: background-position;
+    cursor: default;
+  }
+
+  @keyframes silver-shine {
+    0% {
+      background-position: 100% 50%;
+    }
+    17%, 100% {
+      background-position: 0% 50%;
+    }
   }
 
   .swiss-title-th {
@@ -2336,5 +2370,12 @@ html.dark .noise-texture {
   .reveal-item {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .swiss-title-en {
+    background-image: none !important;
+    -webkit-text-fill-color: currentColor !important;
+    animation: none !important;
+    filter: none !important;
   }
 }
