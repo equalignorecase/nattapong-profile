@@ -140,21 +140,6 @@ const links = [
           </div>
         </div>
       </header>
-      {!showBackLink && (
-        <div class="site-status-bar" aria-label="สถานะระบบ">
-          <div class="site-status-inner">
-            <div class="status-left">
-              <span class="status-tag font-mono">[01 // INDEX]</span>
-              <span class="status-dot-live" aria-hidden="true"></span>
-              <span class="status-text font-mono">STATUS: {profileData.availability.toUpperCase()}</span>
-            </div>
-            <div class="status-right font-mono">
-              <span>LOC: NAKHON PATHOM, TH</span>
-              <span class="status-coord">13.8199° N, 100.0601° E</span>
-            </div>
-          </div>
-        </div>
-      )}
       <main id="main-content" tabindex="-1"><slot /></main>
       <footer class="site-footer">
         <span>© {new Date().getFullYear()} {profileData.name}</span>
