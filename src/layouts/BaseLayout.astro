@@ -96,48 +96,65 @@ const links = [
     <div class="noise-texture" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">ข้ามไปเนื้อหา</a>
     <div class="site-shell">
-      <header class="site-header swiss-floating-island">
-        <div class="header-zone-left">
-          <a href="/" class="wordmark swiss-wordmark" aria-label="Nattapong Nakaom Home">
-            <span class="monogram-box font-mono" aria-hidden="true">NN</span>
-            <div class="wordmark-text">
-              <span class="wordmark-main">NATTAPONG N.</span>
-              <span class="wordmark-sub font-mono">SYS // DEV</span>
-            </div>
-          </a>
-        </div>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <div class="header-zone-left">
+            <a href="/" class="wordmark" aria-label="Nattapong Nakaom Home">
+              <span class="monogram-box font-mono" aria-hidden="true">NN</span>
+              <div class="wordmark-text">
+                <span class="wordmark-main">NATTAPONG N.</span>
+                <span class="wordmark-sub font-mono">SYS // DEV</span>
+              </div>
+            </a>
+          </div>
 
-        <div class="header-zone-center">
-          <nav class="desktop-nav swiss-nav" aria-label="เมนูหลัก">
-            {showBackLink ? (
-              <a href="/" class="back-link"><Icon name="arrow-left" />กลับหน้าแรก</a>
-            ) : (
-              links.map(link => (
-                <a href={`#${link.id}`}>
-                  <span class="nav-num font-mono">{link.num}.</span>
-                  <span class="nav-label">{link.label}</span>
-                </a>
-              ))
-            )}
-          </nav>
-        </div>
-
-        <div class="header-zone-right">
-          <ThemeToggle />
-          <details class="mobile-menu">
-            <summary aria-label="เมนูหลัก"><Icon name="menu" /><span>เมนู</span></summary>
-            <nav aria-label="เมนูมือถือ">
-              {showBackLink && <a href="/">กลับหน้าแรก</a>}
-              {links.map(link => (
-                <a href={`${showBackLink ? '/' : ''}#${link.id}`}>
-                  <span class="font-mono text-xs opacity-60 mr-2">{link.num}.</span>
-                  <span>{link.label}</span>
-                </a>
-              ))}
+          <div class="header-zone-center">
+            <nav class="desktop-nav" aria-label="เมนูหลัก">
+              {showBackLink ? (
+                <a href="/" class="back-link"><Icon name="arrow-left" />กลับหน้าแรก</a>
+              ) : (
+                links.map(link => (
+                  <a href={`#${link.id}`}>
+                    <span class="nav-num font-mono">{link.num}.</span>
+                    <span class="nav-label">{link.label}</span>
+                  </a>
+                ))
+              )}
             </nav>
-          </details>
+          </div>
+
+          <div class="header-zone-right">
+            <ThemeToggle />
+            <details class="mobile-menu">
+              <summary aria-label="เมนูหลัก"><Icon name="menu" /><span>เมนู</span></summary>
+              <nav aria-label="เมนูมือถือ">
+                {showBackLink && <a href="/">กลับหน้าแรก</a>}
+                {links.map(link => (
+                  <a href={`${showBackLink ? '/' : ''}#${link.id}`}>
+                    <span class="font-mono text-xs opacity-60 mr-2">{link.num}.</span>
+                    <span>{link.label}</span>
+                  </a>
+                ))}
+              </nav>
+            </details>
+          </div>
         </div>
       </header>
+      {!showBackLink && (
+        <div class="site-status-bar" aria-label="สถานะระบบ">
+          <div class="site-status-inner">
+            <div class="status-left">
+              <span class="status-tag font-mono">[01 // INDEX]</span>
+              <span class="status-dot-live" aria-hidden="true"></span>
+              <span class="status-text font-mono">STATUS: {profileData.availability.toUpperCase()}</span>
+            </div>
+            <div class="status-right font-mono">
+              <span>LOC: NAKHON PATHOM, TH</span>
+              <span class="status-coord">13.8199° N, 100.0601° E</span>
+            </div>
+          </div>
+        </div>
+      )}
       <main id="main-content" tabindex="-1"><slot /></main>
       <footer class="site-footer">
         <span>© {new Date().getFullYear()} {profileData.name}</span>
