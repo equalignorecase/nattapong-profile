@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Anuphan"', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['"Inter"', '"Anuphan"', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['"Anuphan"', '"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Anuphan"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {

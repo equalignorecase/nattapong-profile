@@ -30,10 +30,10 @@ const links = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
-    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.setAttribute('media', 'all')" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.setAttribute('media', 'all')" />
     <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     </noscript>
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -96,25 +96,21 @@ const links = [
     <div class="noise-texture" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">ข้ามไปเนื้อหา</a>
     <div class="site-shell">
-      <header class="site-header swiss-floating-island">
+      <header class="site-header mono-hairline-header">
         <div class="header-zone-left">
-          <a href="/" class="wordmark swiss-wordmark" aria-label="Nattapong Nakaom Home">
-            <span class="monogram-box font-mono" aria-hidden="true">NN</span>
-            <div class="wordmark-text">
-              <span class="wordmark-main">NATTAPONG N.</span>
-              <span class="wordmark-sub font-mono">SYS // DEV</span>
-            </div>
+          <a href="/" class="wordmark mono-wordmark" aria-label="Nattapong Nakaom Home">
+            <span class="wordmark-main">NATTAPONG<span class="wordmark-dot" aria-hidden="true">.</span></span>
           </a>
         </div>
 
         <div class="header-zone-center">
-          <nav class="desktop-nav swiss-nav" aria-label="เมนูหลัก">
+          <nav class="desktop-nav mono-nav" aria-label="เมนูหลัก">
             {showBackLink ? (
               <a href="/" class="back-link"><Icon name="arrow-left" />กลับหน้าแรก</a>
             ) : (
               links.map(link => (
                 <a href={`#${link.id}`}>
-                  <span class="nav-num font-mono">{link.num}.</span>
+                  <span class="nav-num font-mono">{link.num}</span>
                   <span class="nav-label">{link.label}</span>
                 </a>
               ))
@@ -130,7 +126,7 @@ const links = [
               {showBackLink && <a href="/">กลับหน้าแรก</a>}
               {links.map(link => (
                 <a href={`${showBackLink ? '/' : ''}#${link.id}`}>
-                  <span class="font-mono text-xs opacity-60 mr-2">{link.num}.</span>
+                  <span class="mobile-nav-num font-mono">{link.num}</span>
                   <span>{link.label}</span>
                 </a>
               ))}

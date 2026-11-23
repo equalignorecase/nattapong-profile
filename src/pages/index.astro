@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
-import HeroArt from '../components/HeroArt.astro';
 import TechIcon from '../components/TechIcon.astro';
 import CertificateModal from '../components/CertificateModal.astro';
 import { profileData } from '../data/profile';
@@ -16,60 +15,69 @@ const competitionList = profileData.education.filter(e => e.category === 'compet
 const certsWithIndex = (profileData.certificates || []).map((cert, index) => ({ ...cert, originalIndex: index }));
 const awardCertificates = certsWithIndex.filter(c => !c.category || c.category === 'award');
 const trainingCertificates = certsWithIndex.filter(c => c.category === 'training');
+const totalSkills = profileData.skills.reduce((sum, group) => sum + group.items.length, 0);
+const heroStats = [
+  { value: '3.86', label: 'GPAX', caption: 'ปวส. เทคโนโลยีสารสนเทศ' },
+  { value: String(awardCertificates.length).padStart(2, '0'), label: 'AWARDS', caption: 'รางวัลระดับชาติ & ภาคกลาง' },
+  { value: `${String(allProjects.length).padStart(2, '0')}+`, label: 'PROJECTS', caption: 'ผลงานและระบบที่พัฒนาจริง' },
+  { value: `${totalSkills}+`, label: 'TECH STACK', caption: 'เครื่องมือ & เทคโนโลยี' },
+];
 ---
 <BaseLayout>
   <section id="about" class="hero swiss-hero" aria-labelledby="intro-title">
-    <!-- Architectural Top Bar -->
     <div class="swiss-top-bar">
-      <div class="swiss-top-left">
-        <span class="swiss-tag font-mono">[01 // INDEX]</span>
-        <span class="swiss-dot-live" aria-hidden="true"></span>
-        <span class="swiss-status font-mono">STATUS: {profileData.availability.toUpperCase()}</span>
+      <div class="swiss-top-left font-mono">
+        <span class="swiss-index">01 / PORTFOLIO</span>
       </div>
       <div class="swiss-top-right font-mono">
-        <span>LOC: NAKHON PATHOM, TH</span>
-        <span class="swiss-coord">13.8199° N, 100.0601° E</span>
+        <span class="swiss-dot-live" aria-hidden="true"></span>
+        <span class="swiss-status">{profileData.availability.toUpperCase()}</span>
+        <span class="swiss-sep" aria-hidden="true">—</span>
+        <span class="swiss-loc">NAKHON PATHOM, TH</span>
       </div>
     </div>
 
-    <!-- Main Architectural Grid -->
-    <div class="swiss-main-grid">
-      <!-- Left Column: Oversized Typography & Manifesto -->
-      <div class="swiss-hero-lead">
-        <div class="swiss-name-block">
-          <span class="swiss-label font-mono">FULL-STACK DEVELOPER & SYSTEMS SPECIALIST</span>
-          <h1 id="intro-title" class="swiss-title">
-            <span class="swiss-title-en">NATTAPONG</span>
-            <span class="swiss-title-en">NAKAOM</span>
-            <span class="swiss-title-th">นัฐพงษ์ นาคอ่วม</span>
-          </h1>
-        </div>
+    <div class="swiss-split-grid">
+      <div class="swiss-poster-stage">
+        <p
+          class="swiss-label font-mono"
+          data-typing-phrases={JSON.stringify([
+            'FULL-STACK DEVELOPER',
+            'API & BACKEND ENGINEER',
+            'NETWORK & IOT SPECIALIST',
+            'SYSTEMS BUILDER',
+          ])}
+        >
+          <span class="sr-only">FULL-STACK DEVELOPER &amp; SYSTEMS SPECIALIST</span>
+          <span class="typing-text" aria-hidden="true">FULL-STACK DEVELOPER</span>
+          <span class="typing-cursor" aria-hidden="true"></span>
+        </p>
+        <h1 id="intro-title" class="swiss-title">
+          <span class="swiss-title-en">NATTAPONG</span>
+          <span class="swiss-title-en swiss-title-last">NAKAOM</span>
+          <span class="swiss-title-th">นัฐพงษ์ นาคอ่วม</span>
+        </h1>
 
         <p class="swiss-statement">
           {profileData.bio}
         </p>
 
-        <!-- Swiss Action Indices -->
         <div class="swiss-action-bar">
           <a href="#projects" class="swiss-action-link swiss-primary">
-            <span class="action-num font-mono">[01]</span>
             <span class="action-text">VIEW PROJECTS</span>
             <span class="action-arrow" aria-hidden="true">→</span>
           </a>
           <a href="#skills" class="swiss-action-link">
-            <span class="action-num font-mono">[02]</span>
             <span class="action-text">TECH STACK</span>
             <span class="action-arrow" aria-hidden="true">↓</span>
           </a>
           {hasResume ? (
             <a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" class="swiss-action-link">
-              <span class="action-num font-mono">[03]</span>
-              <span class="action-text">RESUME (PDF)</span>
+              <span class="action-text">RESUME</span>
               <span class="action-arrow" aria-hidden="true">↗</span>
             </a>
           ) : (
             <a href="#contact" class="swiss-action-link">
-              <span class="action-num font-mono">[03]</span>
               <span class="action-text">CONTACT</span>
               <span class="action-arrow" aria-hidden="true">↗</span>
             </a>
@@ -77,9 +85,31 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
         </div>
       </div>
 
-      <!-- Right Column: Swiss System Spec Sheet -->
-      <div class="swiss-hero-spec">
-        <HeroArt />
+      <div class="swiss-dossier">
+        <dl class="swiss-stats-grid" aria-label="สถิติและข้อมูลสำคัญ">
+          {heroStats.map(stat => (
+            <div class="swiss-stat-item">
+              <dd class="swiss-stat-value">{stat.value}</dd>
+              <dt class="swiss-stat-label font-mono">{stat.label}</dt>
+              <dd class="swiss-stat-caption">{stat.caption}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="swiss-highlights-block">
+          <div class="swiss-highlights-head font-mono">
+            <span>KEY HIGHLIGHTS</span>
+            <span class="swiss-highlights-count">01 — {String(profileData.highlights.length).padStart(2, '0')}</span>
+          </div>
+          <ol class="swiss-highlights-grid">
+            {profileData.highlights.map((item, idx) => (
+              <li class="swiss-highlight-item">
+                <span class="swiss-highlight-num font-mono">{String(idx + 1).padStart(2, '0')}</span>
+                <span class="swiss-highlight-text">{item}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </div>
   </section>
@@ -381,6 +411,8 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
     </div>
   </section>
   <script>
+    import { initTypingEffect } from '../scripts/typing-effect.js';
+
     function initCertTabs() {
       const tabBtns = document.querySelectorAll<HTMLButtonElement>('.cert-tab-btn');
       const tabPanels = document.querySelectorAll<HTMLElement>('.cert-tab-panel');
@@ -436,6 +468,7 @@ const trainingCertificates = certsWithIndex.filter(c => c.category === 'training
     }
 
     function initInteractiveFeatures() {
+      initTypingEffect();
       initCertTabs();
       initCopyEmail();
     }
