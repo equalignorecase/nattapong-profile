@@ -1,38 +1,73 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Icon from '../components/Icon.astro';
-import TechIcon from '../components/TechIcon.astro';
-import CertificateModal from '../components/CertificateModal.astro';
-import { profileData } from '../data/profile';
-import { getCollection } from 'astro:content';
-import { fetchGitHubRepoStats } from '../utils/github';
-const gitHubStats = await fetchGitHubRepoStats('equalignorecase');
-const allProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const featuredProjects = allProjects.filter(p => p.data.featured);
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import TechIcon from "../components/TechIcon.astro";
+import CertificateModal from "../components/CertificateModal.astro";
+import NetworkMesh from "../components/NetworkMesh.astro";
+import { profileData } from "../data/profile";
+import { getCollection } from "astro:content";
+import { fetchGitHubRepoStats } from "../utils/github";
+const gitHubStats = await fetchGitHubRepoStats("equalignorecase");
+const allProjects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const featuredProjects = allProjects.filter((p) => p.data.featured);
 const hasResume = Boolean(profileData.resumeUrl);
-const educationList = profileData.education.filter(e => !e.category || e.category === 'education');
-const competitionList = profileData.education.filter(e => e.category === 'competition');
-const certsWithIndex = (profileData.certificates || []).map((cert, index) => ({ ...cert, originalIndex: index }));
-const awardCertificates = certsWithIndex.filter(c => !c.category || c.category === 'award');
-const trainingCertificates = certsWithIndex.filter(c => c.category === 'training');
-const totalSkills = profileData.skills.reduce((sum, group) => sum + group.items.length, 0);
+const educationList = profileData.education.filter(
+  (e) => !e.category || e.category === "education",
+);
+const competitionList = profileData.education.filter(
+  (e) => e.category === "competition",
+);
+const certsWithIndex = (profileData.certificates || []).map((cert, index) => ({
+  ...cert,
+  originalIndex: index,
+}));
+const awardCertificates = certsWithIndex.filter(
+  (c) => !c.category || c.category === "award",
+);
+const trainingCertificates = certsWithIndex.filter(
+  (c) => c.category === "training",
+);
+const totalSkills = profileData.skills.reduce(
+  (sum, group) => sum + group.items.length,
+  0,
+);
 const heroStats = [
-  { value: '3.86', label: 'GPAX', caption: 'ปวส. เทคโนโลยีสารสนเทศ' },
-  { value: String(awardCertificates.length).padStart(2, '0'), label: 'AWARDS', caption: 'รางวัลระดับชาติ & ภาคกลาง' },
-  { value: `${String(allProjects.length).padStart(2, '0')}+`, label: 'PROJECTS', caption: 'ผลงานและระบบที่พัฒนาจริง' },
-  { value: `${totalSkills}+`, label: 'TECH STACK', caption: 'เครื่องมือ & เทคโนโลยี' },
+  { value: "3.86", label: "GPAX", caption: "ปวส. เทคโนโลยีสารสนเทศ" },
+  {
+    value: String(awardCertificates.length).padStart(2, "0"),
+    label: "AWARDS",
+    caption: "รางวัลระดับชาติ & ภาคกลาง",
+  },
+  {
+    value: `${String(allProjects.length).padStart(2, "0")}+`,
+    label: "PROJECTS",
+    caption: "ผลงานและระบบที่พัฒนาจริง",
+  },
+  {
+    value: `${totalSkills}+`,
+    label: "TECH STACK",
+    caption: "เครื่องมือ & เทคโนโลยี",
+  },
 ];
 ---
+
 <BaseLayout>
   <section id="about" class="hero swiss-hero" aria-labelledby="intro-title">
+    <NetworkMesh />
     <div class="swiss-top-bar">
       <div class="swiss-top-left font-mono">
         <span class="swiss-index">01 / PORTFOLIO</span>
       </div>
       <div class="swiss-top-right font-mono">
         <span class="swiss-dot-live" aria-hidden="true"></span>
-        <span class="swiss-status">{profileData.availability.toUpperCase()}</span>
-        <span class="swiss-sep" aria-hidden="true">—</span>
+        <span class="swiss-status">
+          {profileData.availability.toUpperCase()}
+        </span>
+        <span class="swiss-sep" aria-hidden="true">
+          —
+        </span>
         <span class="swiss-loc">NAKHON PATHOM, TH</span>
       </div>
     </div>
@@ -42,14 +77,18 @@ const heroStats = [
         <p
           class="swiss-label font-mono"
           data-typing-phrases={JSON.stringify([
-            'FULL-STACK DEVELOPER',
-            'API & BACKEND ENGINEER',
-            'NETWORK & IOT SPECIALIST',
-            'SYSTEMS BUILDER',
+            "FULL-STACK DEVELOPER",
+            "API & BACKEND ENGINEER",
+            "NETWORK & IOT SPECIALIST",
+            "SYSTEMS BUILDER",
           ])}
         >
-          <span class="sr-only">FULL-STACK DEVELOPER &amp; SYSTEMS SPECIALIST</span>
-          <span class="typing-text" aria-hidden="true">FULL-STACK DEVELOPER</span>
+          <span class="sr-only">
+            FULL-STACK DEVELOPER &amp; SYSTEMS SPECIALIST
+          </span>
+          <span class="typing-text" aria-hidden="true">
+            FULL-STACK DEVELOPER
+          </span>
           <span class="typing-cursor" aria-hidden="true"></span>
         </p>
         <h1 id="intro-title" class="swiss-title">
@@ -58,28 +97,39 @@ const heroStats = [
           <span class="swiss-title-th">นัฐพงษ์ นาคอ่วม</span>
         </h1>
 
-        <p class="swiss-statement">
-          {profileData.bio}
-        </p>
+        <p class="swiss-statement">{profileData.bio}</p>
 
         <div class="swiss-action-bar">
           <a href="#projects" class="swiss-action-link swiss-primary">
             <span class="action-text">VIEW PROJECTS</span>
-            <span class="action-arrow" aria-hidden="true">→</span>
+            <span class="action-arrow" aria-hidden="true">
+              →
+            </span>
           </a>
           <a href="#skills" class="swiss-action-link">
             <span class="action-text">TECH STACK</span>
-            <span class="action-arrow" aria-hidden="true">↓</span>
+            <span class="action-arrow" aria-hidden="true">
+              ↓
+            </span>
           </a>
           {hasResume ? (
-            <a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" class="swiss-action-link">
+            <a
+              href={profileData.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="swiss-action-link"
+            >
               <span class="action-text">RESUME</span>
-              <span class="action-arrow" aria-hidden="true">↗</span>
+              <span class="action-arrow" aria-hidden="true">
+                ↗
+              </span>
             </a>
           ) : (
             <a href="#contact" class="swiss-action-link">
               <span class="action-text">CONTACT</span>
-              <span class="action-arrow" aria-hidden="true">↗</span>
+              <span class="action-arrow" aria-hidden="true">
+                ↗
+              </span>
             </a>
           )}
         </div>
@@ -87,9 +137,11 @@ const heroStats = [
 
       <div class="swiss-dossier">
         <dl class="swiss-stats-grid" aria-label="สถิติและข้อมูลสำคัญ">
-          {heroStats.map(stat => (
+          {heroStats.map((stat) => (
             <div class="swiss-stat-item">
-              <dd class="swiss-stat-value">{stat.value}</dd>
+              <dd class="swiss-stat-value" data-stat-target={stat.value}>
+                {stat.value}
+              </dd>
               <dt class="swiss-stat-label font-mono">{stat.label}</dt>
               <dd class="swiss-stat-caption">{stat.caption}</dd>
             </div>
@@ -99,12 +151,16 @@ const heroStats = [
         <div class="swiss-highlights-block">
           <div class="swiss-highlights-head font-mono">
             <span>KEY HIGHLIGHTS</span>
-            <span class="swiss-highlights-count">01 — {String(profileData.highlights.length).padStart(2, '0')}</span>
+            <span class="swiss-highlights-count">
+              01 — {String(profileData.highlights.length).padStart(2, "0")}
+            </span>
           </div>
           <ol class="swiss-highlights-grid">
             {profileData.highlights.map((item, idx) => (
               <li class="swiss-highlight-item">
-                <span class="swiss-highlight-num font-mono">{String(idx + 1).padStart(2, '0')}</span>
+                <span class="swiss-highlight-num font-mono">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
                 <span class="swiss-highlight-text">{item}</span>
               </li>
             ))}
@@ -115,15 +171,17 @@ const heroStats = [
   </section>
   <section id="skills" aria-labelledby="skills-title">
     <div class="section-header">
-      <h2 id="skills-title" class="section-title">ทักษะและเครื่องมือ</h2>
+      <h2 id="skills-title" class="section-title">
+        ทักษะและเครื่องมือ
+      </h2>
       <span class="meta font-mono">Tech Stack</span>
     </div>
     <div class="skills-grid">
-      {profileData.skills.map(group => (
+      {profileData.skills.map((group) => (
         <div class="skill-group">
           <h3>{group.category}</h3>
           <ul>
-            {group.items.map(skill => (
+            {group.items.map((skill) => (
               <li>
                 <span class="skill-name">
                   <TechIcon name={skill} size={18} />
@@ -138,7 +196,9 @@ const heroStats = [
   </section>
   <section id="education" aria-labelledby="education-title">
     <div class="section-header">
-      <h2 id="education-title" class="section-title">การศึกษาและการอบรม</h2>
+      <h2 id="education-title" class="section-title">
+        การศึกษาและการอบรม
+      </h2>
       <span class="meta font-mono">Education & Competitions</span>
     </div>
     <div class="education-columns">
@@ -148,18 +208,23 @@ const heroStats = [
           <span class="meta font-mono">{educationList.length} รายการ</span>
         </div>
         <div class="education-compact-list">
-          {educationList.map(edu => (
+          {educationList.map((edu) => (
             <article class="education-compact-card">
               <div class="education-compact-top">
-                <span class="institution" title={edu.institution}>{edu.institution}</span>
+                <span class="institution" title={edu.institution}>
+                  {edu.institution}
+                </span>
                 <span class="meta font-mono">{edu.period}</span>
               </div>
               <h4 class="education-compact-title">
-                {('link' in edu && edu.link) ? (
+                {"link" in edu && edu.link ? (
                   <a href={edu.link} target="_blank" rel="noopener noreferrer">
-                    {edu.title}<Icon name="arrow-up-right" />
+                    {edu.title}
+                    <Icon name="arrow-up-right" />
                   </a>
-                ) : edu.title}
+                ) : (
+                  edu.title
+                )}
               </h4>
               <p class="education-compact-desc">{edu.description}</p>
             </article>
@@ -173,18 +238,23 @@ const heroStats = [
           <span class="meta font-mono">{competitionList.length} รายการ</span>
         </div>
         <div class="education-compact-list">
-          {competitionList.map(edu => (
+          {competitionList.map((edu) => (
             <article class="education-compact-card">
               <div class="education-compact-top">
-                <span class="institution" title={edu.institution}>{edu.institution}</span>
+                <span class="institution" title={edu.institution}>
+                  {edu.institution}
+                </span>
                 <span class="meta font-mono">{edu.period}</span>
               </div>
               <h4 class="education-compact-title">
-                {('link' in edu && edu.link) ? (
+                {"link" in edu && edu.link ? (
                   <a href={edu.link} target="_blank" rel="noopener noreferrer">
-                    {edu.title}<Icon name="arrow-up-right" />
+                    {edu.title}
+                    <Icon name="arrow-up-right" />
                   </a>
-                ) : edu.title}
+                ) : (
+                  edu.title
+                )}
               </h4>
               <p class="education-compact-desc">{edu.description}</p>
             </article>
@@ -197,8 +267,12 @@ const heroStats = [
       <div id="certificates" class="certificates-wrapper">
         <div class="certificates-header">
           <div>
-            <h3 id="certificates-title" class="certificates-title">เกียรติบัตรและผลงานการแข่งขัน</h3>
-            <p class="certificates-subtitle">รางวัลการแข่งขันทักษะวิชาชีพระดับชาติ/ภาคกลาง และวุฒิบัตรการอบรม</p>
+            <h3 id="certificates-title" class="certificates-title">
+              เกียรติบัตรและผลงานการแข่งขัน
+            </h3>
+            <p class="certificates-subtitle">
+              รางวัลการแข่งขันทักษะวิชาชีพระดับชาติ/ภาคกลาง และวุฒิบัตรการอบรม
+            </p>
           </div>
           <div class="cert-tabs" role="group" aria-label="หมวดหมู่เกียรติบัตร">
             <button
@@ -209,7 +283,9 @@ const heroStats = [
               data-tab-target="award"
             >
               <span>รางวัลการแข่งขัน</span>
-              <span class="cert-tab-count font-mono">{awardCertificates.length}</span>
+              <span class="cert-tab-count font-mono">
+                {awardCertificates.length}
+              </span>
             </button>
             <button
               type="button"
@@ -219,7 +295,9 @@ const heroStats = [
               data-tab-target="training"
             >
               <span>วุฒิบัตรการอบรม</span>
-              <span class="cert-tab-count font-mono">{trainingCertificates.length}</span>
+              <span class="cert-tab-count font-mono">
+                {trainingCertificates.length}
+              </span>
             </button>
           </div>
         </div>
@@ -229,7 +307,7 @@ const heroStats = [
           class="certificates-grid cert-tab-panel is-active"
           aria-labelledby="tab-btn-award"
         >
-          {awardCertificates.map(cert => (
+          {awardCertificates.map((cert) => (
             <button
               type="button"
               class="certificate-card"
@@ -270,7 +348,7 @@ const heroStats = [
           aria-labelledby="tab-btn-training"
           hidden
         >
-          {trainingCertificates.map(cert => (
+          {trainingCertificates.map((cert) => (
             <button
               type="button"
               class="certificate-card"
@@ -311,19 +389,23 @@ const heroStats = [
   </section>
   <section id="projects" aria-labelledby="projects-title">
     <div class="section-header">
-      <h2 id="projects-title" class="section-title">ผลงานเด่น</h2>
+      <h2 id="projects-title" class="section-title">
+        ผลงานเด่น
+      </h2>
       <span class="meta font-mono">{featuredProjects.length} featured</span>
     </div>
     <div class="project-grid">
       {featuredProjects.map((project, index) => (
         <article
           id={`project-${project.id}`}
-          class={`project-card ${index === 0 ? 'project-card-featured' : ''}`}
+          class={`project-card ${index === 0 ? "project-card-featured" : ""}`}
           aria-labelledby={`project-title-${project.id}`}
         >
           <div class="project-card-header">
             <div class="project-card-meta">
-              <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+              <span class="project-number">
+                {String(index + 1).padStart(2, "0")}
+              </span>
               <span class="meta font-mono">{project.data.year}</span>
             </div>
             <span class="project-role-badge">{project.data.role}</span>
@@ -332,7 +414,7 @@ const heroStats = [
             <h3 id={`project-title-${project.id}`}>{project.data.name}</h3>
             <p class="project-summary">{project.data.summary}</p>
             <ul class="tech-list" aria-label="เทคโนโลยีที่ใช้">
-              {project.data.techStack.map(tech => (
+              {project.data.techStack.map((tech) => (
                 <li class="tech-badge">
                   <TechIcon name={tech} size={14} />
                   <span>{tech}</span>
@@ -342,22 +424,44 @@ const heroStats = [
             <div class="project-actions">
               {project.data.repoUrl && (
                 <div class="project-links-wrap">
-                  <a class="button button-secondary project-github-btn" href={project.data.repoUrl} target="_blank" rel="noopener noreferrer">
+                  <a
+                    class="button button-secondary project-github-btn"
+                    href={project.data.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <TechIcon name="github" size={16} />
                     <span>ดูโค้ดบน GitHub</span>
                     <Icon name="arrow-up-right" />
                   </a>
 
                   {(() => {
-                    const repoName = project.data.repoUrl.replace(/\/$/, '').split('/').pop()?.toLowerCase() || '';
-                    const stats = gitHubStats[repoName] || { stars: 0, forks: 0 };
+                    const repoName =
+                      project.data.repoUrl
+                        .replace(/\/$/, "")
+                        .split("/")
+                        .pop()
+                        ?.toLowerCase() || "";
+                    const stats = gitHubStats[repoName] || {
+                      stars: 0,
+                      forks: 0,
+                    };
                     return (
-                      <div class="github-stats-bar" title={`สถิติสดจาก GitHub (${repoName})`}>
-                        <span class="github-stat-pill" title={`${stats.stars} Stars บน GitHub`}>
+                      <div
+                        class="github-stats-bar"
+                        title={`สถิติสดจาก GitHub (${repoName})`}
+                      >
+                        <span
+                          class="github-stat-pill"
+                          title={`${stats.stars} Stars บน GitHub`}
+                        >
                           <Icon name="star" />
                           <span class="font-mono">{stats.stars}</span>
                         </span>
-                        <span class="github-stat-pill" title={`${stats.forks} Forks บน GitHub`}>
+                        <span
+                          class="github-stat-pill"
+                          title={`${stats.forks} Forks บน GitHub`}
+                        >
                           <Icon name="fork" />
                           <span class="font-mono">{stats.forks}</span>
                         </span>
@@ -372,7 +476,12 @@ const heroStats = [
       ))}
     </div>
     <div class="projects-more-cta">
-      <a href="https://github.com/equalignorecase?tab=repositories" target="_blank" rel="noopener noreferrer" class="button button-secondary">
+      <a
+        href="https://github.com/equalignorecase?tab=repositories"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button button-secondary"
+      >
         <TechIcon name="github" size={16} />
         <span>ดูโปรเจกต์ทั้งหมดบน GitHub ({allProjects.length})</span>
         <Icon name="arrow-up-right" />
@@ -380,14 +489,29 @@ const heroStats = [
     </div>
   </section>
   <section id="contact" class="contact-section" aria-labelledby="contact-title">
-    <div class="contact-intro"><h2 id="contact-title" class="section-title">ช่องทางติดต่อ</h2><p>สนใจร่วมงาน นัดสัมภาษณ์<br />หรือสอบถามเกี่ยวกับผลงาน</p></div>
+    <div class="contact-intro">
+      <h2 id="contact-title" class="section-title">
+        ช่องทางติดต่อ
+      </h2>
+      <p>
+        สนใจร่วมงาน นัดสัมภาษณ์
+        <br />
+        หรือสอบถามเกี่ยวกับผลงาน
+      </p>
+    </div>
     <div class="contact-list">
-      {profileData.contacts.map(contact => {
-        const isEmail = contact.href.startsWith('mailto:');
+      {profileData.contacts.map((contact) => {
+        const isEmail = contact.href.startsWith("mailto:");
         return isEmail ? (
           <div class="contact-item contact-item-copyable">
             <span class="contact-label">{contact.label}</span>
-            <a href={contact.href} class="contact-value font-mono" title="คลิกเพื่อส่งอีเมล">{contact.value}</a>
+            <a
+              href={contact.href}
+              class="contact-value font-mono"
+              title="คลิกเพื่อส่งอีเมล"
+            >
+              {contact.value}
+            </a>
             <button
               type="button"
               class="contact-copy-btn"
@@ -395,44 +519,67 @@ const heroStats = [
               aria-label="คัดลอกอีเมล"
               title="คัดลอกอีเมลลงคลิปบอร์ด"
             >
-              <span class="copy-icon-default"><Icon name="copy" /></span>
-              <span class="copy-icon-checked" hidden><Icon name="check" /></span>
-              <span class="copy-toast" role="status" aria-live="polite">คัดลอกแล้ว!</span>
+              <span class="copy-icon-default">
+                <Icon name="copy" />
+              </span>
+              <span class="copy-icon-checked" hidden>
+                <Icon name="check" />
+              </span>
+              <span class="copy-toast" role="status" aria-live="polite">
+                คัดลอกแล้ว!
+              </span>
             </button>
           </div>
         ) : (
-          <a href={contact.href} class="contact-item" target={contact.href.startsWith('http') ? '_blank' : undefined} rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+          <a
+            href={contact.href}
+            class="contact-item"
+            target={contact.href.startsWith("http") ? "_blank" : undefined}
+            rel={
+              contact.href.startsWith("http")
+                ? "noopener noreferrer"
+                : undefined
+            }
+          >
             <span class="contact-label">{contact.label}</span>
             <span class="contact-value">{contact.value}</span>
-            <span class="contact-icon"><Icon name="arrow-up-right" /></span>
+            <span class="contact-icon">
+              <Icon name="arrow-up-right" />
+            </span>
           </a>
         );
       })}
     </div>
   </section>
   <script>
-    import { initTypingEffect } from '../scripts/typing-effect.js';
+    import { initNetworkMesh } from "../scripts/network-mesh.js";
+    import { initTypingEffect } from "../scripts/typing-effect.js";
+    import { initStatsCounter } from "../scripts/stats-counter.js";
 
     function initCertTabs() {
-      const tabBtns = document.querySelectorAll<HTMLButtonElement>('.cert-tab-btn');
-      const tabPanels = document.querySelectorAll<HTMLElement>('.cert-tab-panel');
+      const tabBtns =
+        document.querySelectorAll<HTMLButtonElement>(".cert-tab-btn");
+      const tabPanels =
+        document.querySelectorAll<HTMLElement>(".cert-tab-panel");
 
-      tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const target = btn.getAttribute('data-tab-target');
-          tabBtns.forEach(b => {
+      tabBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-tab-target");
+          tabBtns.forEach((b) => {
             const active = b === btn;
-            b.classList.toggle('is-active', active);
-            b.setAttribute('aria-pressed', String(active));
+            b.classList.toggle("is-active", active);
+            b.setAttribute("aria-pressed", String(active));
           });
-          tabPanels.forEach(panel => {
+          tabPanels.forEach((panel) => {
             const match = panel.id === `cert-panel-${target}`;
-            panel.classList.toggle('is-active', match);
+            panel.classList.toggle("is-active", match);
             if (match) {
-              panel.removeAttribute('hidden');
-              panel.querySelectorAll('.certificate-card').forEach(c => c.classList.add('is-revealed'));
+              panel.removeAttribute("hidden");
+              panel
+                .querySelectorAll(".certificate-card")
+                .forEach((c) => c.classList.add("is-revealed"));
             } else {
-              panel.setAttribute('hidden', '');
+              panel.setAttribute("hidden", "");
             }
           });
         });
@@ -440,41 +587,49 @@ const heroStats = [
     }
 
     function initCopyEmail() {
-      document.querySelectorAll<HTMLButtonElement>('.contact-copy-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const text = btn.getAttribute('data-copy-text');
-          if (!text) return;
-          try {
-            await navigator.clipboard.writeText(text);
-            const def = btn.querySelector('.copy-icon-default') as HTMLElement;
-            const chk = btn.querySelector('.copy-icon-checked') as HTMLElement;
-            if (def && chk) {
-              def.hidden = true;
-              chk.hidden = false;
-              btn.classList.add('is-copied');
-              setTimeout(() => {
-                def.hidden = false;
-                chk.hidden = true;
-                btn.classList.remove('is-copied');
-              }, 2000);
+      document
+        .querySelectorAll<HTMLButtonElement>(".contact-copy-btn")
+        .forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const text = btn.getAttribute("data-copy-text");
+            if (!text) return;
+            try {
+              await navigator.clipboard.writeText(text);
+              const def = btn.querySelector(
+                ".copy-icon-default",
+              ) as HTMLElement;
+              const chk = btn.querySelector(
+                ".copy-icon-checked",
+              ) as HTMLElement;
+              if (def && chk) {
+                def.hidden = true;
+                chk.hidden = false;
+                btn.classList.add("is-copied");
+                setTimeout(() => {
+                  def.hidden = false;
+                  chk.hidden = true;
+                  btn.classList.remove("is-copied");
+                }, 2000);
+              }
+            } catch (err) {
+              console.error("Clipboard copy failed:", err);
             }
-          } catch (err) {
-            console.error('Clipboard copy failed:', err);
-          }
+          });
         });
-      });
     }
 
     function initInteractiveFeatures() {
+      initNetworkMesh();
       initTypingEffect();
+      initStatsCounter();
       initCertTabs();
       initCopyEmail();
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initInteractiveFeatures);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initInteractiveFeatures);
     } else {
       initInteractiveFeatures();
     }

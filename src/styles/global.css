@@ -433,6 +433,8 @@
      FULL-HEIGHT PURE TYPE-AS-HERO — SWISS POSTER (1140px × 100svh)
      ========================================================================== */
   .swiss-hero {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -443,6 +445,13 @@
     color: var(--mono-ink);
     border-bottom: 1px solid var(--mono-border);
     gap: clamp(14px, 2vh, 24px);
+  }
+
+  .swiss-top-bar,
+  .swiss-split-grid,
+  .swiss-dossier {
+    position: relative;
+    z-index: 1;
   }
 
   .swiss-hero :focus-visible {
@@ -487,8 +496,15 @@
   }
 
   @keyframes mono-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.25; }
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.25;
+    }
   }
 
   .swiss-sep {
@@ -545,8 +561,16 @@
   }
 
   @keyframes typing-blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
+
+    0%,
+    49% {
+      opacity: 1;
+    }
+
+    50%,
+    100% {
+      opacity: 0;
+    }
   }
 
   .swiss-title {
@@ -646,6 +670,12 @@
     font-variant-numeric: tabular-nums;
     color: var(--mono-ink);
     margin: 0;
+    transition: color 280ms ease, text-shadow 280ms ease;
+  }
+
+  .swiss-stat-value.is-counting {
+    color: #f97316;
+    text-shadow: 0 0 16px rgba(249, 115, 22, 0.45);
   }
 
   .swiss-stat-label {
