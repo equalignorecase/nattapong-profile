@@ -5,10 +5,7 @@ export function initPageEffects() {
 
   const updateNavigation = () => {
     const isScrolled = window.scrollY > 25;
-    header?.classList?.toggle?.('is-scrolled', isScrolled);
-
     const height = header?.getBoundingClientRect().height ?? 0;
-    document.documentElement.style.setProperty('--header-height', `${height}px`);
     let current = sections[0];
     for (const section of sections) {
       if (section.getBoundingClientRect().top <= height + 24) current = section;
@@ -16,6 +13,9 @@ export function initPageEffects() {
     if (window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
       current = sections.at(-1);
     }
+
+    header?.classList?.toggle?.('is-scrolled', isScrolled);
+    document.documentElement.style.setProperty('--header-height', `${height}px`);
     for (const link of links) {
       if (current && link.getAttribute('href') === `#${current.id}`) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
@@ -55,7 +55,7 @@ export function initPageEffects() {
       entry.target.classList.add('is-revealed');
       observer.unobserve(entry.target);
     }
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.05, rootMargin: '80px 0px' });
 
   targets.forEach(element => observer.observe(element));
 }
